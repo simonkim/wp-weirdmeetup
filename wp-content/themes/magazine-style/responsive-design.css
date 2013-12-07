@@ -1,0 +1,116 @@
+/*===================== 
+Responsive  Style
+GPL v3 provided by wrock.org
+===================*/
+
+
+@media only screen and (min-width: 480px) {
+/* == INTERMEDIATE: Menu == */
+
+#navigation-wrapper, .nav ul a, .nav ul {
+
+}
+.nav ul {
+
+}
+.nav a, .next-post a{
+
+}
+.nav li:first-child a{
+	margin-left:0;
+}
+.nav li:last-child  a{
+	margin-right:0;
+}
+/* == INTERMEDIATE: IE Fixes == */
+.nav ul li{
+	display:inline;
+}
+
+}
+
+.nav{
+	width:100%;
+
+}
+.nav select {
+	display: none;
+
+}
+@media (max-width: 960px) {
+.nav ul     {
+	display: none;
+}
+
+.nav select {
+	display: inline-block;
+	width: 100%;
+	font-size: 22px;
+}
+#author-bio {font-size: 10px;
+}
+a {font-size: 11px;}
+#pagecont {
+	width:100% !important;
+	font-size: 22px;
+	line-height: 2;}
+#content {
+	width:100% !important;
+	font-size: 22px;
+	line-height: 2;}
+.postmeta_box {
+	font-size: 18px !important;
+	line-height: 2;
+}
+#bottom-menu{
+	display: none;
+}
+#footer-right {
+	float: none !important;
+	width: auto !important;
+}
+#footer-left{
+	float: none !important;
+	width: auto !important;
+}
+.backtop {	display: none;}
+.kon{	display: none;}
+.entry {
+font-size:10px;}
+.readmore{
+padding:0;
+font-size: 8px;}
+h1 {
+font-size:15px;
+line-height: 2;
+}
+h2 {
+font-size:14px;
+}
+h3 {
+font-size:13px;
+}
+.postmeta_box {
+	display: none;
+}
+.spicesocialwidget{
+	display: none;
+}
+#header #logo img{
+width: 100%;
+}
+.wp-pagenavi{font-size: 5px; padding:5px;margin: 0px;}
+#pagenavi a{font-size: 5px;padding: 5px; margin: 0px;}
+.pages{display: none;}
+.dots{display: none;}
+body{
+font-size: 10px !important;
+line-height: 2 !important;
+}
+#commentform p {
+font-size:10px;
+}
+#sidebar{width: 100% !important;
+font-size: 14px;
+line-height: 2;}
+}

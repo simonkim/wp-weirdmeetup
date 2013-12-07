@@ -1,0 +1,481 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: MH Magazine lite v1.5.6\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2013-09-30 11:35:37+0000\n"
+"Last-Translator: test <mail@michael-hebenstreit.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n>1;\n"
+"X-Generator: Poedit 1.5.5\n"
+"X-Poedit-Language: \n"
+"X-Poedit-Country: \n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;\n"
+"X-Poedit-Basepath: ../\n"
+"X-Poedit-Bookmarks: \n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Textdomain-Support: yes"
+
+#: comments.php:11
+#: content.php:12
+#: content.php:54
+#: includes/mh-widgets.php:107
+#@ mh
+msgid "0 Comments"
+msgstr "0 Commentaires"
+
+#: comments.php:11
+#: content.php:12
+#: content.php:54
+#: includes/mh-widgets.php:107
+#@ mh
+msgid "1 Comment"
+msgstr "1 Commentaire"
+
+#: comments.php:11
+#: content.php:12
+#: content.php:54
+#: includes/mh-widgets.php:107
+#@ mh
+msgid "% Comments"
+msgstr "% Commentaires"
+
+#: functions.php:105
+#@ mh
+msgid "Articles by "
+msgstr "Articles de "
+
+#: comments.php:16
+#: content.php:32
+#: functions.php:374
+#@ mh
+msgid "&laquo;"
+msgstr "&laquo;"
+
+#: comments.php:16
+#: content.php:31
+#: functions.php:375
+#@ mh
+msgid "&raquo;"
+msgstr "&raquo;"
+
+#: comments.php:7
+#@ mh
+msgid "This post is password protected. Enter the password to view comments."
+msgstr "Ce poste est prot&eacute;g&eacute; par mot. Entrez le mot de passe pour acc&eacute;der aux commentaires."
+
+#: comments.php:24
+#@ mh
+msgid "Leave a comment"
+msgstr "Laisser un commentaire"
+
+#: comments.php:25
+#@ mh
+msgid "Your email address will not be published."
+msgstr "Votre adresse de messagerie ne sera pas publi&eacute;e."
+
+#: comments.php:27
+#@ mh
+msgid "Comment"
+msgstr "Commenter"
+
+#: functions.php:34
+#@ mh
+msgid "Main Navigation"
+msgstr "Menu Principal"
+
+#: functions.php:63
+#@ mh
+msgid "Sidebar"
+msgstr "Barre lat&eacute;rale"
+
+#: functions.php:64
+#@ mh
+msgid "Home 1"
+msgstr "Accueil 1"
+
+#: functions.php:64
+#: functions.php:65
+#: functions.php:66
+#: functions.php:67
+#: functions.php:68
+#@ mh
+msgid "Widget area on homepage"
+msgstr "Domaine widget sur site"
+
+#: functions.php:65
+#@ mh
+msgid "Home 2"
+msgstr "Accueil 2"
+
+#: functions.php:66
+#@ mh
+msgid "Home 3"
+msgstr "Accueil 3"
+
+#: functions.php:67
+#@ mh
+msgid "Home 4"
+msgstr "Accueil 4"
+
+#: functions.php:68
+#@ mh
+msgid "Home 5"
+msgstr "Accueil 5"
+
+#: functions.php:71
+#@ mh
+msgid "Footer 1"
+msgstr "Pied de page 1"
+
+#: functions.php:71
+#: functions.php:72
+#: functions.php:73
+#: functions.php:74
+#@ mh
+msgid "Footer widget area"
+msgstr "Zone de widget de pied de page"
+
+#: functions.php:72
+#@ mh
+msgid "Footer 2"
+msgstr "Pied de page 2"
+
+#: functions.php:73
+#@ mh
+msgid "Footer 3"
+msgstr "Pied de page 3"
+
+#: functions.php:74
+#@ mh
+msgid "Footer 4"
+msgstr "Pied de page 4"
+
+#: functions.php:175
+#, php-format
+#@ mh
+msgid "%1$s at %2$s"
+msgstr "%1$s &aacute; %2$s"
+
+#: functions.php:179
+#@ mh
+msgid "(Edit)"
+msgstr "(&Eacute;diter)"
+
+#: functions.php:182
+#@ mh
+msgid "Your comment is awaiting moderation."
+msgstr "Votre commentaire est en attente de mod&eacute;ration."
+
+#: functions.php:198
+#@ mh
+msgid "Name "
+msgstr "Nom "
+
+#: functions.php:199
+#@ mh
+msgid "Email "
+msgstr "&Eacute;mail "
+
+#: functions.php:200
+#@ mh
+msgid "Website"
+msgstr "Website"
+
+#: functions.php:92
+#, php-format
+#@ mh
+msgid "Page %s"
+msgstr "Pages %s"
+
+#: content.php:12
+#@ mh
+msgid " in "
+msgstr " en "
+
+#: includes/mh-widgets.php:17
+#@ mh
+msgid "MH Facebook Likebox"
+msgstr "MH Facebook Likebox"
+
+#: includes/mh-widgets.php:48
+#: includes/mh-widgets.php:133
+#@ mh
+msgid "Title:"
+msgstr "Titre:"
+
+#: includes/mh-widgets.php:52
+#@ mh
+msgid "Facebook Page URL:"
+msgstr "Url de la page facebook:"
+
+#: includes/mh-widgets.php:56
+#@ mh
+msgid "Width:"
+msgstr "Largeur:"
+
+#: includes/mh-widgets.php:60
+#@ mh
+msgid "Height:"
+msgstr "Hauteur:"
+
+#: includes/mh-widgets.php:72
+#@ mh
+msgid "MH Custom Posts"
+msgstr "MH messages personnalis&eacute;s"
+
+#: includes/mh-shortcodes.php:30
+#@ mh
+msgid "Advertisement"
+msgstr "Publicit&eacute;"
+
+#: includes/mh-options.php:23
+#@ mh
+msgid "General Options"
+msgstr "Options g&eacute;n&eacute;rales"
+
+#: includes/mh-options.php:40
+#@ mh
+msgid "Custom CSS"
+msgstr "CSS personnalis&eacute;e"
+
+#: includes/mh-options.php:38
+#@ mh
+msgid "Default position of sidebar"
+msgstr "La position par d&eacute;faut de la barre lat&eacute;rale"
+
+#: includes/mh-options.php:38
+#: includes/mh-options.php:59
+#@ mh
+msgid "Left"
+msgstr "Gauche"
+
+#: includes/mh-options.php:38
+#: includes/mh-options.php:60
+#@ mh
+msgid "Right"
+msgstr "Droit"
+
+#: includes/mh-options.php:41
+#@ mh
+msgid "Tracking Code (e.g. Google Analytics)"
+msgstr "Code de suivi (par exemple Google Analytics)"
+
+#: content.php:12
+#@ mh
+msgid "Posted on "
+msgstr "Post&eacute; sur "
+
+#: content.php:12
+#@ mh
+msgid " by "
+msgstr " par "
+
+#: functions.php:341
+#@ mh
+msgid "Related Posts"
+msgstr "Messages li&eacute;es"
+
+#: includes/mh-options.php:39
+#@ mh
+msgid "Custom excerpt length (Words)"
+msgstr ""
+
+#: includes/mh-widgets.php:177
+#@ mh
+msgid "MH Slider Widget (Homepage)"
+msgstr ""
+
+#: functions.php:222
+#@ mh
+msgid "Subheading (will be displayed below post title)"
+msgstr ""
+
+#: functions.php:271
+#@ mh
+msgid "About "
+msgstr ""
+
+#: functions.php:274
+#@ mh
+msgid "More articles written by "
+msgstr ""
+
+#: functions.php:274
+#@ mh
+msgid "More Posts"
+msgstr ""
+
+#: includes/mh-widgets.php:16
+#@ mh
+msgid "Widget to display a Facebook likebox in your sidebar"
+msgstr ""
+
+#: includes/mh-widgets.php:44
+#@ mh
+msgid "Connect with us on Facebook"
+msgstr ""
+
+#: includes/mh-widgets.php:71
+#@ mh
+msgid "Custom Posts Widget to display posts based on categories or tags"
+msgstr ""
+
+#: includes/mh-widgets.php:176
+#@ mh
+msgid "Slider widget for use on homepage templates"
+msgstr ""
+
+#: includes/mh-options.php:36
+#@ mh
+msgid "Scale background image to full size"
+msgstr ""
+
+#: functions.php:213
+#@ mh
+msgid "Post options"
+msgstr ""
+
+#: searchform.php:3
+#@ mh
+msgid "To search, type and hit enter"
+msgstr ""
+
+#: comments.php:11
+#@ mh
+msgid " to "
+msgstr ""
+
+#: content-none.php:7
+#@ mh
+msgid "Sorry, but nothing matched your search terms. Please try again with different keywords."
+msgstr ""
+
+#: content-none.php:9
+#@ mh
+msgid "It seems we can&rsquo;t find what you&rsquo;re looking for. Perhaps searching can help."
+msgstr ""
+
+#: includes/mh-options.php:37
+#@ mh
+msgid "Disable comments on pages"
+msgstr ""
+
+#: comments.php:19
+#@ mh
+msgid "Comments are disabled"
+msgstr ""
+
+#: functions.php:310
+#@ mh
+msgid "&larr; Previous image"
+msgstr ""
+
+#: functions.php:312
+#@ mh
+msgid "&larr; Previous post"
+msgstr ""
+
+#: functions.php:317
+#@ mh
+msgid "Next image &rarr;"
+msgstr ""
+
+#: functions.php:319
+#@ mh
+msgid "Next post &rarr;"
+msgstr ""
+
+#: search.php:14
+#@ mh
+msgid "Search Results for "
+msgstr ""
+
+#: content-none.php:13
+#@ mh
+msgid "Latest posts"
+msgstr ""
+
+#: functions.php:117
+#@ mh
+msgid "Page not found (404)"
+msgstr ""
+
+#: functions.php:69
+#@ mh
+msgid "Posts 1"
+msgstr ""
+
+#: functions.php:69
+#@ mh
+msgid "Widget area above single post content"
+msgstr ""
+
+#: functions.php:70
+#@ mh
+msgid "Posts 2"
+msgstr ""
+
+#: functions.php:70
+#@ mh
+msgid "Widget area below single post content"
+msgstr ""
+
+#: functions.php:303
+#@ mh
+msgid "&larr; Back to post"
+msgstr ""
+
+#: functions.php:422
+#@ mh
+msgid "Theme Support: Get started!"
+msgstr ""
+
+#: includes/mh-widgets.php:137
+#: includes/mh-widgets.php:229
+#@ mh
+msgid "Select a Category:"
+msgstr ""
+
+#: includes/mh-widgets.php:139
+#: includes/mh-widgets.php:231
+#@ mh
+msgid "All"
+msgstr ""
+
+#: includes/mh-widgets.php:152
+#: includes/mh-widgets.php:244
+#@ mh
+msgid "Filter Posts by Tags (e.g. lifestyle):"
+msgstr ""
+
+#: includes/mh-widgets.php:156
+#: includes/mh-widgets.php:248
+#@ mh
+msgid "Show:"
+msgstr ""
+
+#: includes/mh-widgets.php:157
+#: includes/mh-widgets.php:161
+#: includes/mh-widgets.php:249
+#: includes/mh-widgets.php:253
+#@ mh
+msgid "Posts"
+msgstr ""
+
+#: includes/mh-widgets.php:160
+#: includes/mh-widgets.php:252
+#@ mh
+msgid "Skip:"
+msgstr ""
+
+#: includes/mh-widgets.php:165
+#: includes/mh-widgets.php:257
+#@ mh
+msgid "Ignore Sticky Posts"
+msgstr ""
+
