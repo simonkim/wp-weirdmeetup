@@ -35,17 +35,36 @@ else { ?>
                 <img src="<?php echo aq_resize( wp_get_attachment_url( get_post_thumbnail_id() ), att_img('blog_entry_width'),  att_img('blog_entry_height'),  att_img('blog_entry_crop') ) ?>" alt="<?php echo the_title(); ?>" />
             </a>
         <?php } ?>
-        
+<!--
+메인페이지 커스텀. 그라바타 이미지를 보여준다. @minieetea
+-->
         <div class="loop-entry-details">
             
-            <header><h2><a href="<?php the_permalink(); ?>" title="<?php echo esc_attr( the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php the_title(); ?></a></h2></header>
+            <header> 
+ 
+<a href="<?php echo get_author_posts_url( get_the_author_meta( 'ID' ) ); ?>"> <?php echo get_avatar( get_the_author_meta('ID'), 60, $default, $alt ); ?></a>
+
+<h2><a href="<?php the_permalink(); ?>" title="<?php echo esc_attr( the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php the_title(); ?></a></h2>
+
+<ul class="meta single-meta clr">
+            <li><i class="icon-user"></i><?php the_author_posts_link(); ?></li>
+            <li><i class="icon-time"></i><?php the_date(); ?></li>    
+	    <li><i class="icon-folder-open"></i>
+	            <?php if ( of_get_option('blog_tags', '1' ) =='1' ) : ?>
+			<?php the_tags(''); ?>
+			<?php endif; ?></li>
+            
+            	</ul>
+       
+
+</header>
 
             <div class="loop-entry-excerpt">
             	<?php the_excerpt(); ?>
             </div><!-- .loop-entry-excerpt -->
             
         </div><!-- .loop-entry-details -->
-        
+        </ul><!-- .meta -->
     </article><!-- .loop-entry-entry -->
 
 <?php } ?>
