@@ -33,10 +33,11 @@
                     <?php } ?>
                 <?php if ( of_get_option('site_description','1') == '1' ) echo '<p id="site-description">'. get_bloginfo('description') .'</p>'; ?>
             </div><!-- .logo -->
+            <a href="#secondary" class="mobile-opener"><span>Go to Navigation</span></a>
         </header><!-- .header -->
         
         <?php get_sidebar(); ?>
-        
+        <a href="#" class="mobile-closer"><span>Go to the top</span></a>
 	</div><!-- .left-container clr -->
         
     <div class="container-right span_19 col clr">
