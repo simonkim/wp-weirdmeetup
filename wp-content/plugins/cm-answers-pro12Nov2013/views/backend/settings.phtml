@@ -1,0 +1,655 @@
+<p class="clear">
+    <?php
+    if(!empty($messages)):
+        foreach($messages as $message):
+            ?><div class="updated"><p><?php echo $message; ?></p></div><?php
+        endforeach;
+    endif;
+    ?>
+<style>
+    #cm-answers-settings-form table {border-spacing:0;}
+    #cm-answers-settings-form tr td, #cm-answers-settings-form tr th {padding:10px; border-bottom: solid 1px #ccc;}
+    #cm-answers-settings-form tr:last-child td, #cm-answers-settings-form tr:last-child th {border-bottom: none}
+    #cm-answers-settings-form .tg-table-plain td, #cm-answers-settings-form .tg-table-plain th { border: 1px #555 solid; padding: 5px;border-collapse: collapse;text-align: center;vertical-align: middle; }
+</style>
+<script>
+    jQuery(document).ready(function(){
+        jQuery('#tabs').tabs();
+    });
+</script>
+<form method="post" enctype="multipart/form-data" id="cm-answers-settings-form">
+
+    <p>
+        You can add "My Questions" and "My Answers" profile views per user anywhere on the site by using shortcodes: [cma-my-questions] and [cma-my-answers].
+    </p>
+    <p>
+        You can also generate questions list by using shortcode: [cma-questions]. "Questions" and "My questions" recognize following additional parameters: <a href="javascript:void(0)" onclick="jQuery(this).parent().next().slideToggle()">Show/Hide</a>
+    </p>
+    <ul style="display:none;list-style-type:disc;margin-left:20px;">
+        <li><strong>limit</strong> - number of questions/page to display (default: "Questions" 5 | "My questions" -1 [no limit] )</li>
+        <li><strong>author</strong> - ID of the question author (default: empty) [Question only]</li>
+        <li><strong>cat</strong> - slug of category (categories separate by commas) (default: empty)</li>
+        <li><strong>sort</strong> - one of following: newest, hottest, views, votes (default: newest)</li>
+        <li><strong>form</strong> - add "question form" below list (default: 0)</li>
+        <li><strong>search</strong> - add "search form" above list (default: 1)</li>
+        <li><strong>pagination</strong> - show pagination (default: 1)</li>
+        <li><strong>hidequestions</strong> - hides the question list (default: 0)</li>
+        <li><strong>votes</strong> - show the number of votes (default: 1)</li>
+        <li><strong>views</strong> - show the number of views (default: 1)</li>
+        <li><strong>answers</strong> - show the number of answers (default: 1)</li>
+        <li><strong>updated</strong> - show the information about question's last update (default: 1)</li>
+        <li><strong>authorinfo</strong> - show the infformation about question's author (default: 1)</li>
+        <li><strong>statusinfo</strong> - show the information about question's status (default: 0)</li>
+        <!--<li><strong>displaycategories</strong> - add "search form" above list (default: 1)</li>-->
+        <li> Example: [cma-questions limit="10" author="123" sort="hottest" form="1"]</li>
+    </ul>
+    <p>
+        Moderation options table: <a href="javascript:void(0)" onclick="jQuery(this).parent().next().slideToggle()">Show/Hide</a>
+    </p>
+    <div style="display:none;">
+        <table class="tg-table-plain">
+            <tr>
+                <th colspan="3" class="tg-center">OPTION - WHERE IS IT LOCATED? IS IT ENABLED?</th>
+                <th rowspan="3" class="tg-center">EFFECT</th>
+            </tr>
+            <tr class="tg-even">
+                <td colspan="2" class="tg-center">CM-Answers -> Moderation</td>
+                <td class="tg-center">WP -> Settings -> Discussion</td>
+            </tr>
+            <tr>
+                <td class="tg-center">"Auto-approve new questions"</td>
+                <td class="tg-center">"Simulate comment add when question is added"</td>
+                <td class="tg-center">"An administrator must always approve the comment"</td>
+            </tr>
+            <tr class="tg-even">
+                <td class="tg-center">YES</td>
+                <td class="tg-center">YES</td>
+                <td class="tg-center">YES</td>
+                <td class="tg-center">ALWAYS PUBLISH</td>
+            </tr>
+            <tr>
+                <td class="tg-center">YES</td>
+                <td class="tg-center">YES</td>
+                <td class="tg-center">NO</td>
+                <td class="tg-center">ALWAYS PUBLISH</td>
+            </tr>
+            <tr class="tg-even">
+                <td class="tg-center">YES</td>
+                <td class="tg-center">NO</td>
+                <td class="tg-center">YES</td>
+                <td class="tg-center">ALWAYS PUBLISH</td>
+            </tr>
+            <tr>
+                <td class="tg-center">YES</td>
+                <td class="tg-center">NO</td>
+                <td class="tg-center">NO</td>
+                <td class="tg-center">ALWAYS PUBLISH</td>
+            </tr>
+            <tr class="tg-even">
+                <td class="tg-center">NO</td>
+                <td class="tg-center">YES</td>
+                <td class="tg-center">YES</td>
+                <td class="tg-center">ALWAYS MODERATE (NEVER PUBLISH)</td>
+            </tr>
+            <tr>
+                <td class="tg-center">NO</td>
+                <td class="tg-center">YES</td>
+                <td class="tg-center">NO</td>
+                <td class="tg-center"> USE INTERNALL WP DISCUSSION SETTINGS TO DECIDE WHETER MODERATE/PUBLISH <br/>
+                    <i>NOTE: ADMIN'S AND MODERATOR'S QUESTIONS ARE ALWAYS PUBLISHED</i><br/>
+            </tr>
+            <tr class="tg-even">
+                <td class="tg-center">NO</td>
+                <td class="tg-center">NO</td>
+                <td class="tg-center">YES</td>
+                <td class="tg-center">ALWAYS PUBLISH</td>
+            </tr>
+            <tr>
+                <td class="tg-center">NO</td>
+                <td class="tg-center">NO</td>
+                <td class="tg-center">NO</td>
+                <td class="tg-center">ALWAYS PUBLISH</td>
+            </tr>
+        </table>
+    </div>
+    <p>Link to questions frontend list: <a href="<?php echo get_post_type_archive_link('cma_thread'); ?>" target="_new"><?php echo get_post_type_archive_link('cma_thread'); ?></a></p>
+
+    <div id="tabs">
+        <ul>
+            <li><a href="#tabs-1">General Settings</a></li>
+            <li><a href="#tabs-2">Moderation</a></li>
+            <li><a href="#tabs-7">Access Control</a></li>
+            <li><a href="#tabs-3">Notifications</a></li>
+            <li><a href="#tabs-6">Disclaimer</a></li>
+            <li><a href="#tabs-4">Social Login</a></li>
+            <li><a href="#tabs-5">Sidebar</a></li>
+            <li><a href="#tabs-8">Referrals</a></li>
+            <li><a href="#tabs-9">Custom CSS</a></li>
+        </ul>
+        <div id="tabs-1">
+            <h3>General Settings:</h3>
+            <table>
+                <tr valign="top">
+                    <th scope="row" valign="middle" align="left" ><?php _e('Questions listing title', 'cm-answers-pro'); ?>:</th>
+                    <td ><input type="text" name="questions_title" value="<?php echo esc_attr($questions_title); ?>" placeholder="<?php _e('Questions listing title', 'cm-answers-pro'); ?>"/></td>
+                    <td><?php _e('Define what will appear in CM Answers questions page title', 'cm-answers-pro'); ?></td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row" valign="middle" align="left" ><?php _e('Answers permalink', 'cm-answers-pro'); ?>:</th>
+                    <td ><input type="text" name="answers_permalink" value="<?php echo esc_attr($answersPermalink); ?>" placeholder="<?php _e('Answers permalink', 'cm-answers-pro'); ?>"/></td>
+                    <td><?php _e('You can replace default "/answers" slug to whatever you want.', 'cm-answers-pro'); ?></td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row" valign="top" align="left" >Set as homepage</th>
+                    <td ><input type="radio" name="answersAsHomepage" id="answersAsHomepage_0" value="0" <?php
+                        if(!$answersAsHomepage) echo 'checked="checked"';
+                        ?>/><label for="answersAsHomepage_0"> No</label> &nbsp; <input type="radio" name="answersAsHomepage" id="answersAsHomepage_1" value="1" <?php
+                                if($answersAsHomepage) echo 'checked="checked"';
+                                ?>/><label for="answersAsHomepage_1"> Yes</label></td>
+                    <td>If enabled, questions listing will be displayed as your site's homepage</td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row" valign="middle" align="left" >Add "Answers" to WP Nav Menu:</th>
+                    <td ><input type="radio" name="add_menu" id="add_menu_0" value="0" <?php
+                        if(!$addMenu) echo 'checked="checked"';
+                        ?>/><label for="add_menu_0"> No</label> &nbsp; <input type="radio" name="add_menu" id="add_menu_1" value="1" <?php
+                                if($addMenu) echo 'checked="checked"';
+                                ?>/><label for="add_menu_1"> Yes</label></td>
+                    <td>You need to have "wp_nav_menu" trigger in your template</td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row" valign="middle" align="left" >Disable "Answers" page:</th>
+                    <td ><input type="radio" name="answerPageDisabled" id="answerPageDisabled_0" value="0" <?php
+                        if(!$answerPageDisabled) echo 'checked="checked"';
+                        ?>/><label for="answerPageDisabled_0"> No</label> &nbsp; <input type="radio" name="answerPageDisabled" id="answerPageDisabled_1" value="1" <?php
+                                if($answerPageDisabled) echo 'checked="checked"';
+                                ?>/><label for="answerPageDisabled_1"> Yes</label></td>
+                    <td>Disable the "Answers" page completely (it will show 404 instead)</td>
+                </tr>
+            </table>
+
+            <br><h3>Questions General Settings:</h3>
+            <table>
+                <tr valign="top">
+                    <th scope="row" valign="top" align="left" >Allowed attachment file types for questions:</th>
+                    <td ><input type="text" name="attachmentAllowed" value="<?php echo esc_attr($attachmentAllowed); ?>" /></td>
+                    <td>Comma-separated list of allowed attachment file types. Leave empty to disable. (example: zip,doc,docx)</td>
+                </tr>
+
+                <tr valign="top">
+                    <th scope="row" valign="top" align="left" >Allowed attachment max size (in bytes):</th>
+                    <td ><input type="number" name="attachmentMaxSize" value="<?php echo esc_attr($attachmentMaxSize); ?>" /></td>
+                    <td>Max size in bytes of attachment. Cannot exceed server max, which is: <?php echo ini_get('upload_max_filesize'); ?> where 1M equals to 1,048,576 bytes</td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row" valign="top" align="left" >Allow questions with no description:</th>
+                    <td ><input type="radio" name="question_description_optional" id="question_description_optional_0" value="0" <?php
+                        if(!$questionDescriptionOptional) echo 'checked="checked"';
+                        ?>/><label for="question_description_optional_0"> No</label> &nbsp; <input type="radio" name="question_description_optional" id="question_description_optional_1" value="1" <?php
+                                if($questionDescriptionOptional) echo 'checked="checked"';
+                                ?>/><label for="question_description_optional_1"> Yes</label></td>
+                    <td>If enabled, users will be able to post questions without description.</td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row" valign="top" align="left" >Allow answers after the question is "Resolved":</th>
+                    <td ><input type="radio" name="answer_after_resolved" id="answer_after_resolved_0" value="0" <?php
+                        if(!$answerAfterResolved) echo 'checked="checked"';
+                        ?>/><label for="answer_after_resolved_0"> No</label> &nbsp; <input type="radio" name="answer_after_resolved" id="answer_after_resolved_1" value="1" <?php
+                                if($answerAfterResolved) echo 'checked="checked"';
+                                ?>/><label for="answer_after_resolved_1"> Yes</label></td>
+                    <td>If enabled, users will be able to post answers even after the question was resolved</td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row" valign="top" align="left" >Enable ratings for answers:</th>
+                    <td ><input type="radio" name="ratings" id="ratings_0" value="0" <?php
+                        if(!$ratings) echo 'checked="checked"';
+                        ?>/><label for="ratings_0"> No</label> &nbsp; <input type="radio" name="ratings" id="ratings_1" value="1" <?php
+                                if($ratings) echo 'checked="checked"';
+                                ?>/><label for="ratings_1"> Yes</label></td>
+                    <td>If enabled, users will be able to rate answers and will see the number of answers next to the question name (main Answers page only)</td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row" valign="top" align="left" >Enable negative ratings:</th>
+                    <td ><input type="radio" name="negative_ratings" id="negative_ratings_0" value="0" <?php
+                        if(!$negativeRatings) echo 'checked="checked"';
+                        ?>/><label for="negative_ratings_0"> No</label> &nbsp; <input type="radio" name="negative_ratings" id="negative_ratings_1" value="1" <?php
+                                if($negativeRatings) echo 'checked="checked"';
+                                ?>/><label for="negative_ratings_1"> Yes</label></td>
+                    <td>If enabled, users will be able to give "thumbs down" for an answer. If previous settings is disabled, this will be ignored.</td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row" valign="top" align="left" >Increment number of views every time the page is refreshed</th>
+                    <td ><input type="radio" name="viewsIncremented" id="viewsIncremented_0" value="0" <?php
+                        if(!$viewsIncremented) echo 'checked="checked"';
+                        ?>/><label for="viewsIncremented_0"> No</label> &nbsp; <input type="radio" name="viewsIncremented" id="viewsIncremented_1" value="1" <?php
+                                if($viewsIncremented) echo 'checked="checked"';
+                                ?>/><label for="viewsIncremented_1"> Yes</label></td>
+                    <td>If enabled, views counter will be increased every time the page is refreshed. If disabled, cookie will be set to block user from increasing the counter on current machine.</td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row" valign="top" align="left" >Show number of views for a question</th>
+                    <td ><input type="radio" name="views" id="views_0" value="0" <?php
+                        if(!$views) echo 'checked="checked"';
+                        ?>/><label for="views_0"> No</label> &nbsp; <input type="radio" name="views" id="views_1" value="1" <?php
+                                if($views) echo 'checked="checked"';
+                                ?>/><label for="views_1"> Yes</label></td>
+                    <td>If enabled, users will see number of views next to the question name (main Answers page only)</td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row" valign="top" align="left" >Show number of answers for a question</th>
+                    <td ><input type="radio" name="answers" id="answers_0" value="0" <?php
+                        if(!$views) echo 'checked="checked"';
+                        ?>/><label for="answers_0"> No</label> &nbsp; <input type="radio" name="answers" id="answers_1" value="1" <?php
+                                if($answers) echo 'checked="checked"';
+                                ?>/><label for="answers_1"> Yes</label></td>
+                    <td>If enabled, users will see number of answers next to the question name (main Answers page only)</td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row" valign="top" align="left" >Show information about the author of a question</th>
+                    <td ><input type="radio" name="author" id="author_0" value="0" <?php
+                        if(!$author) echo 'checked="checked"';
+                        ?>/><label for="author_0"> No</label> &nbsp; <input type="radio" name="author" id="author_1" value="1" <?php
+                                if($author) echo 'checked="checked"';
+                                ?>/><label for="author_1"> Yes</label></td>
+                    <td>If enabled, users will see the information about the author of the question next to the question name (main Answers page only)</td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row" valign="top" align="left" >Show information about the updates for a question</th>
+                    <td ><input type="radio" name="updated" id="updated_0" value="0" <?php
+                        if(!$updated) echo 'checked="checked"';
+                        ?>/><label for="updated_0"> No</label> &nbsp; <input type="radio" name="updated" id="updated_1" value="1" <?php
+                                if($updated) echo 'checked="checked"';
+                                ?>/><label for="updated_1"> Yes</label></td>
+                    <td>If enabled, users will see the information about the last update (the author and time/date) next to the question name (main Answers page only)</td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row" valign="top" align="left" >Show number of questions and answers next to username:</th>
+                    <td ><input type="radio" name="show_user_stats" id="show_user_stats_0" value="0" <?php
+                        if(!$showUserStats) echo 'checked="checked"';
+                        ?>/><label for="show_user_stats_0"> No</label> &nbsp; <input type="radio" name="show_user_stats" id="show_user_stats_1" value="1" <?php
+                                if($showUserStats) echo 'checked="checked"';
+                                ?>/><label for="show_user_stats_1"> Yes</label></td>
+                    <td>If enabled, number of questions and answers posted by user will be displayed on answers page next to username</td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row" valign="top" align="left" >On questions list in "votes" box show:</th>
+                    <td ><input type="radio" name="votes_mode" id="votes_mode_<?php echo CMA_AnswerThread::VOTES_MODE_COUNT; ?>" value="<?php echo CMA_AnswerThread::VOTES_MODE_COUNT; ?>" <?php
+                        if($votesMode == CMA_AnswerThread::VOTES_MODE_COUNT) echo 'checked="checked"';
+                        ?>/><label for="votes_mode_<?php echo CMA_AnswerThread::VOTES_MODE_COUNT; ?>"> Total number of votes of its answers</label><br /><br />
+                        <input type="radio" name="votes_mode" id="votes_mode_<?php echo CMA_AnswerThread::VOTES_MODE_HIGHEST; ?>" value="<?php echo CMA_AnswerThread::VOTES_MODE_HIGHEST; ?>" <?php
+                        if($votesMode == CMA_AnswerThread::VOTES_MODE_HIGHEST) echo 'checked="checked"';
+                        ?>/><label for="votes_mode_<?php echo CMA_AnswerThread::VOTES_MODE_HIGHEST; ?>"> Rating of the best answer</label></td>
+                    <td>If ratings are disabled, this setting will be ignored.</td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row" valign="middle" align="left" >Show gravatar photos:</th>
+                    <td ><input type="radio" name="showGravatars" id="showGravatars_0" value="0" <?php
+                        if(!$showGravatars) echo 'checked="checked"';
+                        ?>/><label for="showGravatars_0"> No</label> &nbsp; <input type="radio" name="showGravatars" id="showGravatars_1" value="1" <?php
+                                if($showGravatars) echo 'checked="checked"';
+                                ?>/><label for="showGravatars_1"> Yes</label></td>
+                    <td>If this is enabled, photos from gravatar (http://www.gravatar.com/) will be shown next to user name and in his profile page</td>
+                </tr>
+
+                <tr valign="top">
+                    <th scope="row" valign="middle" align="left" >Show social share icons in question page:</th>
+                    <td ><input type="radio" name="showSocial" id="showSocial_0" value="0" <?php
+                        if(!$showSocial) echo 'checked="checked"';
+                        ?>/><label for="showSocial_0"> No</label> &nbsp; <input type="radio" name="showSocial" id="showSocial_1" value="1" <?php
+                                if($showSocial) echo 'checked="checked"';
+                                ?>/><label for="showSocial_1"> Yes</label></td>
+                    <td>If this is enabled, social media links (Facebook, Linkedin, G+, Twitter) will be shown in the question page</td>
+                </tr>
+
+                <tr valign="top">
+                    <th scope="row" valign="middle" align="left" >Sort answers by:</th>
+                    <td ><input type="radio" name="answerSortingBy" id="answerSortingBy_date" value="<?php echo CMA_AnswerThread::ANSWER_SORTING_BY_DATE ?>" <?php
+                        echo $answerSortingBy == CMA_AnswerThread::ANSWER_SORTING_BY_DATE ? 'checked="checked"' : '';
+                        ?>/><label for="answerSortingBy_date"> Date</label><br />
+                        <input type="radio" name="answerSortingBy" id="answerSortingBy_votes" value="<?php echo CMA_AnswerThread::ANSWER_SORTING_BY_VOTES; ?>" <?php
+                        echo $answerSortingBy == CMA_AnswerThread::ANSWER_SORTING_BY_VOTES ? 'checked="checked"' : '';
+                        ?>/><label for="answerSortingBy_votes"> Votes</label></td>
+                    <td>Default: by date</td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row" valign="middle" align="left" >Sort answers in:</th>
+                    <td ><input type="radio" name="answerSortingDesc" id="answerSortingDesc_0" value="0" <?php
+                        if(!$answerSortingDesc) echo 'checked="checked"';
+                        ?>/><label for="answerSortingDesc_0"> Ascending order <br />oldest (or lowest rate) first</label>
+                        <br />
+                        <br />
+                        <input type="radio" name="answerSortingDesc" id="answerSortingDesc_1" value="1" <?php
+                        if($answerSortingDesc) echo 'checked="checked"';
+                        ?>/><label for="answerSortingDesc_1"> Descending order <br />newest (or highest rate) first</label></td>
+                    <td>Specify how answers to a question should be sorted (default: descending - newest first)</td>
+                </tr>
+
+                <tr valign="top">
+                    <th scope="row" valign="middle" align="left" ><?php _e('Code snippet background color', 'cm-answers-pro'); ?>:</th>
+                    <td ><input type="text" name="code_snippet_color" value="<?php echo esc_attr($codeSnippetColor); ?>" placeholder="<?php _e('Code snippet background color', 'cm-answers-pro'); ?>"/></td>
+                    <td><?php _e('You can write color by name: white, red, lightblue. Or you can use html format #CCC, #0000FF etc.', 'cm-answers-pro'); ?></td>
+                </tr>
+
+                <tr valign="top">
+                    <th scope="row" valign="top" align="left" ><?php _e('Show markup box near question/answer form', 'cm-answers-pro'); ?>:</th>
+                    <td ><input type="radio" name="markupBox" id="markup_box_0" value="0" <?php
+                        if(!$markupBox) echo 'checked="checked"';
+                        ?>/><label for="markup_box_0"> No</label> &nbsp; <input type="radio" name="markupBox" id="markup_box_1" value="1" <?php
+                                if($markupBox) echo 'checked="checked"';
+                                ?>/><label for="markup_box_1"> Yes</label></td>
+                    <td>If enabled, the box showing the markup and codewrap possibility will appear.</td>
+                </tr>
+
+                <tr valign="top">
+                    <th scope="row" valign="top" align="left" ><?php _e('Show richtext editor for question/answer form', 'cm-answers-pro'); ?>:</th>
+                    <td ><input type="radio" name="richtextEditor" id="richtext_editor_0" value="0" <?php
+                        if(!$richtextEditor) echo 'checked="checked"';
+                        ?>/><label for="richtext_editor_0"> No</label> &nbsp; <input type="radio" name="richtextEditor" id="richtext_editor_1" value="1" <?php
+                                if($richtextEditor) echo 'checked="checked"';
+                                ?>/><label for="richtext_editor_1"> Yes</label></td>
+                    <td>If enabled, the question/answer textarea will be replaced with RichText editor (TinyMCE).</td>
+                </tr>
+
+                <tr valign="top">
+                    <th scope="row" valign="top" align="left" >Replace "0" votes/answers to "no":</th>
+                    <td ><input type="radio" name="votesNo" id="votes_no_0" value="0" <?php
+                        if(!$votesNo) echo 'checked="checked"';
+                        ?>/><label for="votes_no_0"> No</label> &nbsp; <input type="radio" name="votesNo" id="votes_no_1" value="1" <?php
+                                if($votesNo) echo 'checked="checked"';
+                                ?>/><label for="votes_no_1"> Yes</label></td>
+                    <td>If enabled, users will see "no" instead of Zero</td>
+                </tr>
+
+                <tr valign="top">
+                    <th scope="row" valign="top" align="left" ><?php _e('Amount of Questions per page', 'cm-answers-pro'); ?></th>
+                    <td ><input type="number" name="itemsPerPage" value="<?php echo esc_attr($itemsPerPage); ?>" /></td>
+                    <td><?php _e('Questions per page', 'cm-answers-pro'); ?></td>
+                </tr>
+
+                <tr valign="top">
+                    <th scope="row" valign="top" align="left" ><?php _e('Enable tags in questions', 'cm-answers-pro'); ?>:</th>
+                    <td ><input type="radio" name="tagsSwitch" id="tags_switch_0" value="0" <?php if(!$tagsSwitch) echo 'checked="checked"'; ?>/><label for="tags_switch_0"> No</label> &nbsp;
+                        <input type="radio" name="tagsSwitch" id="tags_switch_1" value="1" <?php if($tagsSwitch) echo 'checked="checked"'; ?>/><label for="tags_switch_1"> Yes</label></td>
+                    <td><?php _e('If enabled, tags field will appear when submiting a question', 'cm-answers-pro'); ?></td>
+                </tr>
+
+                <tr valign="top">
+                    <th scope="row" valign="middle" align="left" ><?php _e('Sticky questions background color', 'cm-answers-pro'); ?>:</th>
+                    <td ><input type="text" name="stickyQuestionColor" value="<?php echo esc_attr($stickyQuestionColor); ?>" placeholder="<?php _e('Sticky questions background color', 'cm-answers-pro'); ?>"/></td>
+                    <td><?php _e('You can write color by name: white, red, lightblue. Or you can use html format #CCC, #0000FF etc.', 'cm-answers-pro'); ?></td>
+                </tr>
+
+
+
+            </table>
+        </div>
+        <div id="tabs-2">
+            <h3>Moderation</h3>
+            <p>Please view the Moderation options table located at the top of the setting page</p>
+
+            <table>
+                <tr valign="top">
+                    <th scope="row" valign="middle" align="left" >Auto-approve new questions:</th>
+                    <td ><input type="radio" name="questions_auto_approve" id="questions_auto_approve_0" value="0" <?php
+                        if(!$questionAutoApproved) echo 'checked="checked"';
+                        ?>/><label for="questions_auto_approve_0"> No</label> &nbsp; <input type="radio" name="questions_auto_approve" id="questions_auto_approve_1" value="1" <?php
+                                if($questionAutoApproved) echo 'checked="checked"';
+                                ?>/><label for="questions_auto_approve_1"> Yes</label></td>
+                    <td>This option overrides following options. Turning this option ON - turnes OFF the question moderation.</td>
+                </tr>
+<!--                <tr valign="top">
+                    <th scope="row" valign="middle" align="left" >Use WordPress built-in functions for questions filtering:</th>
+                    <td ><input type="radio" name="spamFilter" id="spamFilter_0" value="0" <?php
+                if(!$spamFilter) echo 'checked="checked"';
+                ?>/><label for="spamFilter_0"> No</label> &nbsp; <input type="radio" name="spamFilter" id="spamFilter_1" value="1" <?php
+                if($spamFilter) echo 'checked="checked"';
+                ?>/><label for="spamFilter_1"> Yes</label></td>
+                    <td>Check the question using builtin WP methods (check_comment(), wp_blacklist_check()).
+                        <br/>(<strong>Tip:</strong> You can modify the behavior of this with: Settings->Discussion moderation settings)</td>
+                </tr>-->
+                <tr valign="top">
+                    <th scope="row" valign="middle" align="left" >Simulate comment add when question is added:</th>
+                    <td ><input type="radio" name="simulateComment" id="simulateComment_0" value="0" <?php
+                        if(!$simulateComment) echo 'checked="checked"';
+                        ?>/><label for="simulateComment_0"> No</label> &nbsp; <input type="radio" name="simulateComment" id="simulateComment_1" value="1" <?php
+                                if($simulateComment) echo 'checked="checked"';
+                                ?>/><label for="simulateComment_1"> Yes</label></td>
+                    <td>Try to add questions as if they were comments.
+                        <br/>(<strong>Tip:</strong> Triggers external spam filtering functions for comments (e.g. Akismet))</td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row" valign="middle" align="left" >Auto-approve answers:</th>
+                    <td ><input type="radio" name="answers_auto_approve" id="answers_auto_approve_0" value="0" <?php
+                        if(!$answerAutoApproved) echo 'checked="checked"';
+                        ?>/><label for="answers_auto_approve_0"> No</label> &nbsp; <input type="radio" name="answers_auto_approve" id="answers_auto_approve_1" value="1" <?php
+                                if($answerAutoApproved) echo 'checked="checked"';
+                                ?>/><label for="answers_auto_approve_1"> Yes</label></td>
+                    <td></td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row" valign="middle" align="left" >Auto-approve questions and answers from following users:</th>
+                    <td ><select name="authorsAutoApproved[]" multiple="multiple">
+                            <?php
+                            foreach(get_users() as $user)
+                            {
+                                $selected = (in_array($user->ID, $authorsAutoApproved)) ? ' selected="selected"' : '';
+                                echo '<option value="' . $user->ID . '"' . $selected . '>' . $user->user_login . '</option>';
+                            }
+                            ?>
+                        </select></td>
+                    <td>Hold down "ctrl" key to select more than one user</td>
+                </tr>
+            </table>
+        </div>
+        <div id="tabs-7">
+            <h3>Access Control</h3>
+            <table>
+                <tr valign="top">
+                    <th scope="row" valign="top" align="left" ><?php _e('Allow users only to comment', 'cm-answers-pro'); ?>:</th>
+                    <td ><input type="radio" name="userCommentOnly" id="user_comment_0" value="0" <?php if(!$userCommentOnly) echo 'checked="checked"'; ?>/><label for="user_comment_0"> No</label> &nbsp;
+                        <input type="radio" name="userCommentOnly" id="user_comment_1" value="1" <?php if($userCommentOnly) echo 'checked="checked"'; ?>/><label for="user_comment_1"> Yes</label></td>
+                    <td><?php _e('Only users with roles: admin and editor will have ability to add questions.', 'cm-answers-pro'); ?></td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row" valign="top" align="left" ><?php _e('Allow only logged in users to view questions & and answers', 'cm-answers-pro'); ?>:</th>
+                    <td ><input type="radio" name="userLoggedOnly" id="user_logged_0" value="0" <?php if(!$userLoggedOnly) echo 'checked="checked"'; ?>/><label for="user_logged_0"> No</label> &nbsp;
+                        <input type="radio" name="userLoggedOnly" id="user_logged_1" value="1" <?php if($userLoggedOnly) echo 'checked="checked"'; ?>/><label for="user_logged_1"> Yes</label></td>
+                    <td><?php _e('Only users which have logged in will be able to view questions and answers.', 'cm-answers-pro'); ?></td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="tabs-3">
+            <h3>Notifications:</h3>
+            <table>
+                <tr valign="top">
+                    <th scope="row" valign="middle" align="left" >Notify about new questions:</th>
+                    <td ><input type="text" size="60" name="notification_new_questions" value="<?php echo esc_attr($notificationNewQuestions); ?>" placeholder="Example: email@address.com, name@otheraddress.com"/></td>
+                    <td>Separate e-mail addresses by commas or leave empty to disable.</td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row" valign="middle" align="left" >New question notification title:</th>
+                    <td ><input type="text" size="60" name="new_question_notification_title" value="<?php echo esc_attr($newQuestionNotificationTitle); ?>" /></td>
+                    <td></td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row" valign="top" align="left" >New question notification content:</th>
+                    <td ><textarea cols="60" rows="5" name="new_question_notification_content"><?php echo $newQuestionNotificationContent; ?></textarea></td>
+                    <td><em>[blogname]</em> - Name of the site<br />
+                        <em>[author]</em> - Author of the question<br />
+                        <em>[question_title]</em> - Title of the question<br />
+                        <em>[question_status]</em> - Approval status of the question (pending, approved)<br />
+                        <em>[question_link]</em> - Link to the new question</td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row" valign="middle" align="left" >New answer notification title:</th>
+                    <td ><input type="text" size="60" name="notification_title" value="<?php echo esc_attr($notificationTitle); ?>" /></td>
+                    <td></td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row" valign="top" align="left" >New answer notification content:</th>
+                    <td ><textarea cols="60" rows="5" name="notification_content"><?php echo $notificationContent; ?></textarea></td>
+                    <td><em>[blogname]</em> - Name of the site<br />
+                        <em>[question_title]</em> - Title of the question<br />
+                        <em>[comment_link]</em> - Link to the new answer</td>
+                </tr>
+            </table>
+        </div>
+        <div id="tabs-6">
+            <h3>Disclaimer:</h3>
+            <table>
+                <tr valign="top">
+                    <th scope="row" valign="middle" align="left" >Show disclaimer for first time users:<br><br><br><br></th>
+                    <td ><input type="radio" name="disclaimer_approve" id="disclaimer_approve_0" value="0" <?php
+                        if(!$DisclaimerApproved) echo 'checked="checked"';
+                        ?>/><label for="disclaimer_approve_0"> No</label> &nbsp; <input type="radio" name="disclaimer_approve" id="disclaimer_approve_1" value="1" <?php
+                                if($DisclaimerApproved) echo 'checked="checked"';
+                                ?>/><label for="disclaimer_approve_1"> Yes</label></td>
+                    <td>In case you want disclaimer to appear for new user you need to select yes</td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row" valign="top" align="left" >Disclaimer Text:</th>
+                    <td ><textarea cols="60" rows="5" name="disclaimer_content"><?php echo $DisclaimerContent; ?></textarea></td>
+                    <td>Please describe in details the message which will appear in the disclaimer</td>
+                </tr>
+                </tr>
+                <tr valign="top">
+                    <th scope="row" valign="top" align="left" >Disclaimer Accept Button text:</th>
+                    <td ><textarea cols="60" rows="1" name="disclaimer_content_accept"><?php echo $DisclaimerContentAccept; ?></textarea></td>
+                    <td>Please specify what will appear in the disclaimer accept button</td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row" valign="top" align="left" >Disclaimer Reject Button text:</th>
+                    <td ><textarea cols="60" rows="1" name="disclaimer_content_reject"><?php echo $DisclaimerContentReject; ?></textarea></td>
+                    <td>Please specify what will appear in the disclaimer reject button</td>
+                </tr>
+
+            </table>
+        </div>
+
+        <div id="tabs-4">
+            <h3>Social Login (leave empty to disable):</h3>
+            <?
+            if(!ini_get('allow_url_fopen'))
+            {
+                echo '<span style="color:red">Your server configuration needs to be changed to allow social login. Please enable allow_url_fopen in your global php.ini file on the server.</span>';
+            }
+            ?>
+            <table>
+                <tr valign="top">
+                    <th scope="row" valign="middle" align="left" colspan="3">Facebook:<br />
+                <ul style="font-weight:normal;list-style-type:circle;margin-left:20px;"><li>Create Facebook application at <a href="https://developers.facebook.com/apps/" target="new">https://developers.facebook.com/apps/</a></li>
+                    <li>Remember to enter App Domains (<?php echo str_replace('www.', '', $_SERVER['HTTP_HOST']);
+            ?>)</li>
+                    <li>"Website with Facebook Login" must be checked, but for "Site URL", you can enter any landing URL. (<a href="<?php echo CMA_RESOURCE_URL; ?>/imgs/fb-settings.png" target="new">See Example</a>)</li>
+                    <li>Make sure App was defined in sendbox mode and a Category was defined for App in FaceBook</li>
+                </ul></th>
+                </tr>
+                <tr valign="top">
+                    <th scope="row" valign="middle" align="left" >App ID:</th>
+                    <td ><input type="text" size="60" name="fb_app_id" value="<?php echo esc_attr($fb_app_id); ?>" /></td>
+                    <td>Facebook App ID</td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row" valign="middle" align="left" >App Secret:</th>
+                    <td ><input type="text" size="60" name="fb_app_secret" value="<?php echo esc_attr($fb_app_secret); ?>" /></td>
+                    <td>Facebook App Secret</td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row" valign="middle" align="left" colspan="3">Google:<br />
+                <ul style="font-weight:normal;list-style-type:circle;margin-left:20px;"><li>Create a Google APIs project at <a href="https://code.google.com/apis/console/" target="new">https://code.google.com/apis/console/</a></li>
+                    <li>You do not have to enable any services from the Services tab.</li>
+                    <li>Make sure to go to "API Access" tab and Create an OAuth 2.0 client ID.</li>
+                    <li>Choose Product name and home page URL (ex <?php bloginfo('url') ?>) (<a href="<?php echo CMA_RESOURCE_URL; ?>/imgs/google1-settings.png" target="new">See Example</a>)</li>
+
+                    <li>Choose Web application for Application type (<a href="<?php echo CMA_RESOURCE_URL; ?>imgs/google2-settings.png" target="new">See Example</a>)</li>
+                    <li>Make sure that redirect URI is set to actual OAuth 2.0 callback URL: <?php echo site_url(); ?>/auth/google/oauth2callback</li>
+                </ul></th>
+                </tr>
+                <tr valign="top">
+                    <th scope="row" valign="middle" align="left" >Client ID:</th>
+                    <td ><input type="text" size="60" name="google_client_id" value="<?php echo esc_attr($google_client_id); ?>" /></td>
+                    <td>Google Client ID</td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row" valign="middle" align="left" >Client Secret:</th>
+                    <td ><input type="text" size="60" name="google_client_secret" value="<?php echo esc_attr($google_client_secret); ?>" /></td>
+                    <td>Google Client Secret</td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row" valign="middle" align="left" colspan="3">LinkedIn:<br />
+                <ul style="font-weight:normal;list-style-type:circle;margin-left:20px;"><li>Create LinkedIn application at <a href="https://www.linkedin.com/secure/developer" target="new">https://www.linkedin.com/secure/developer</a></li>
+                    <li>Enter your website url (<?php bloginfo('url') ?>)</li>
+                    <li>There is no need to enter OAuth Redirect URL</li>
+                    <li>Enter your domain (<?php echo str_replace('www.', '', $_SERVER['HTTP_HOST']);
+            ?>) at JavaScript API Domain</li>
+                </ul></th>
+                </tr>
+                <tr valign="top">
+                    <th scope="row" valign="middle" align="left" >API Key:</th>
+                    <td ><input type="text" size="60" name="linkedin_api_key" value="<?php echo esc_attr($linkedin_api_key); ?>" /></td>
+                    <td>LinkedIn API Key</td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row" valign="middle" align="left" >Secret Key:</th>
+                    <td ><input type="text" size="60" name="linkedin_secret_key" value="<?php echo esc_attr($linkedin_secret_key); ?>" /></td>
+                    <td>LinkedIn Secret Key</td>
+                </tr>
+            </table>
+        </div>
+        <div id="tabs-5">
+            <h3>Sidebar</h3>
+            <table>
+                <tr valign="top">
+                    <th scope="row" valign="middle" align="left" >Enable sidebar:</th>
+                    <td ><input type="radio" name="sidebar_enable" id="sidebar_enable_0" value="0" <?php
+                        if(!$sidebarEnable) echo 'checked="checked"';
+                        ?>/><label for="sidebar_enable_0"> No</label> &nbsp; <input type="radio" name="sidebar_enable" id="sidebar_enable_1" value="1" <?php
+                                if($sidebarEnable) echo 'checked="checked"';
+                                ?>/><label for="sidebar_enable_1"> Yes</label></td>
+                    <td>Enable separate sidebar for CM Answers pages</td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row" valign="middle" align="left">Set sidebar max width (in px):</th>
+                    <td><input type="number" name="sidebar_max_width" value="<?php echo esc_attr($sidebarMaxWidth); ?>" /></td>
+                    <td>Set maximum width of sidebar or leave 0 to auto-adjust</td>
+                </tr>
+            </table>
+        </div>
+        <div id="tabs-8">
+            <h3>Referrals</h3>
+            <p>Refer new users to any of the CM Plugins and you'll receive 10% of their purchase!. For more information please visit CM Plugins <a href="http://www.cminds.com/referral-program/" target="new">Affiliate page</a></p>
+            <table>
+                <tr valign="top">
+                    <th scope="row" valign="middle" align="left" >Enable referrals:</th>
+                    <td ><input type="radio" name="referral_enable" id="referral_enable_0" value="0" <?php
+                        if(!$referralEnable) echo 'checked="checked"';
+                        ?>/><label for="referral_enable_0"> No</label> &nbsp; <input type="radio" name="referral_enable" id="referral_enable_1" value="1" <?php
+                                if($referralEnable) echo 'checked="checked"';
+                                ?>/><label for="referral_enable_1"> Yes</label></td>
+                    <td>Enable referrals link at the bottom of the question and the answer page</td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row" valign="middle" align="left" ><?php _e('Affiliate Code', 'cm-answers-pro'); ?>:</th>
+                    <td ><input type="text" name="affiliate_code" value="<?php echo esc_attr($affiliateCode); ?>" placeholder="<?php _e('Affiliate Code', 'cm-answers-pro'); ?>"/></td>
+                    <td><?php _e('Please add your affiliate code in here.', 'cm-answers-pro'); ?></td>
+                </tr>
+
+            </table>
+        </div>
+        <div id="tabs-9">
+            <h3>Custom CSS</h3>
+            <p>Place your styles here to override any CSS rule of the plugin.</p>
+            <table>
+                <tr valign="top">
+                    <th scope="row" valign="middle" align="left" ><?php _e('Custom CSS', 'cm-answers-pro'); ?>:</th>
+                    <td>
+                        <textarea name="custom_css" rows=10 cols=60 placeholder="<?php _e('Custom CSS', 'cm-answers-pro'); ?>"/><?php echo $customCSS; ?></textarea>
+                    </td>
+                    <td><?php _e('Please add your custom CSS here.', 'cm-answers-pro'); ?></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <input type="submit" class="button-primary" value="Update" />
+</form>

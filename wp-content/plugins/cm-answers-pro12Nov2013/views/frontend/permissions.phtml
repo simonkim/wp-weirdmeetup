@@ -1,0 +1,21 @@
+<?php if (!isset($contentOnly)): get_header(); ?>
+    <div class="cma-main">
+        <div id="primary" class="site-content cma-content">
+            <div id="content" role="main">
+            <?php endif; ?>
+            <div class="CMDM">
+                <ul class="errors">
+                    <li><?php _e('You do not have permissions to see this page',
+                'cm-answers-pro'); ?></li>
+                </ul>
+                <a href="javascript:history.back(-1)"><?php _e('Go back to previous page',
+                'cm-answers-pro'); ?></a><br />
+                <?php
+                require(CMA_PATH . '/views/frontend/answer/widget/login.phtml');
+                ?>
+            </div>
+<?php if (!isset($contentOnly)): ?></div></div></div>
+    <?php
+    get_footer();
+endif;
+?>

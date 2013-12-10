@@ -1,0 +1,55 @@
+<table class="cma-thread-list">
+    <thead>
+        <tr>
+            <?php if(CMA_AnswerThread::isRatingAllowed()): ?>
+                <th><?php _e('Votes', 'cm-answers-pro'); ?></th>
+            <?php endif; ?>
+                <?php if(!CMA_AnswerThread::isAnswerAutoApproved() && !$public): ?><th><?php _e('Status', 'cm-answers-pro'); ?></th><?php endif; ?>
+            <th style="text-align:left;"><?php _e('Answer', 'cm-answers-pro'); ?></th>
+        </tr>
+    </thead>
+
+    <?php foreach($answers as $answer): ?>
+        <?php
+        if(strtolower($answer['status']) != strtolower(__('approved', 'cm-answers-pro')) && $public)
+        {
+            continue;
+        }
+        $question   = CMA_AnswerThread::getInstance($answer['questionId']);
+        $answerPart = '#comment-' . $answer['id'];
+        ?>
+        <tr>
+            <?php if(CMA_AnswerThread::isRatingAllowed()): ?>
+                <td class="cma-thread-meta">
+                    <div class="cma-thread-numbers cma-thread-votes"><div class="cma-thread-numbers-count cma-thread-votes-count"><?php
+                            $votes = $answer['rating'];
+                            echo $votes;
+                            ?>
+                        </div>
+                        <div class="cma-thread-numbers-caption cma-thread-votes-caption"><?php
+                            if($votes == 1) _e('vote', 'cm-answers-pro');
+                            else _e('votes', 'cm-answers-pro');
+                            ?>
+                        </div>
+                    </div>
+                </td>
+            <?php endif; ?>
+            <?php if(!CMA_AnswerThread::isAnswerAutoApproved() && !$public): ?>
+                <td class="cma-thread-meta">
+                    <?php echo $answer['status']; ?>
+                </td><?php endif; ?>
+            <td class="cma-thread-summary">
+                <div class="cma-answer-title">
+                    <a href="<?php echo $question->getPermalink(true, $answerPart); ?>">
+                        <?php echo substr(strip_tags($answer['content']), 0, 100); ?>...
+                    </a>
+                </div>
+                <div class="cma-thread-updated">
+                    <?php
+                    printf(__('posted %s in reply to %s', 'cm-answers-pro'), $answer['date'], '<a href="' . $question->getPermalink(true) . '" >' . $question->getTitle() . '</a>');
+                    ?>
+                </div>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+</table>

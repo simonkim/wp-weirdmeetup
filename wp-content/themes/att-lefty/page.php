@@ -33,8 +33,10 @@ get_header(); ?>
 						<?php edit_post_link( __( 'Edit Page', 'att' ), '<span class="edit-link">', '</span>' ); ?>
 					</footer><!-- .entry-footer -->
 				</article><!-- #post -->
-
-				<?php comments_template(); ?>
+				<?php
+				// @minieetea : comment disable
+				// comments_template();
+				?>
 			<?php endwhile; ?>
 
 		</div><!-- #content -->

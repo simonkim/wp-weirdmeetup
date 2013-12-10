@@ -1,0 +1,60 @@
+<?php
+global $wp_query;
+/*
+ *  Disclaimer text
+ */
+if(CMA_AnswerThread::isDisclaimerApproved())
+{
+    add_action('wp_enqueue_scripts', 'cma_enqueue_disclaimer');
+
+    function cma_enqueue_disclaimer()
+    {
+        wp_register_script('cma_disclaimer', CMA_URL . '/views/resources/disclaimer.js');
+        wp_localize_script('cma_disclaimer', 'cma_disclaimer_opts', array(
+            'content' => CMA_AnswerThread::getDisclaimerContent(),
+            'acceptText' => CMA_AnswerThread::getDisclaimerContentAccept(),
+            'rejectText' => CMA_AnswerThread::getDisclaimerContentReject()));
+        wp_enqueue_script('cma_disclaimer');
+    }
+
+}
+get_header();
+/*
+ * Inline styles
+ */
+echo CMA_BaseController::_loadView('answer/widget/inline-styles');
+?>
+
+<div class="cma-main">
+    <div class="cma-wrapper">
+        <div id="primary" class="site-content cma-content">
+            <div id="content" role="main">
+                <?php
+                /*
+                 * Load the single question view
+                 */
+                echo CMA_BaseController::_loadView('answer/widget/single-question');
+                ?>
+                <div class="cma-clear"></div>
+            </div>
+
+            <?php if(CMA_AnswerThread::isReferralEnabled() && CMA_AnswerThread::getAffiliateCode()): ?>
+                <span class="cma_referral_link">
+                    <a href="http://www.cminds.com/store/answers/?af=<?php echo CMA_AnswerThread::getAffiliateCode() ?>">
+                        <img src="http://static.cminds.com/wp-content/uploads/download_answer.png" height="22"/>
+                    </a>
+                </span>
+            <?php endif; ?>
+
+            <div class="cma-clear"></div>
+        </div>
+        <?php
+        /*
+         * CMA-Sidebar
+         */
+        echo CMA_BaseController::_loadView('answer/widget/sidebar');
+        ?>
+    </div>
+</div>
+<?php
+get_footer();

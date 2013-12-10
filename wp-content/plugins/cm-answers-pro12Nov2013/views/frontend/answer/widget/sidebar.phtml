@@ -1,0 +1,10 @@
+<?php
+if(CMA_AnswerThread::isSidebarEnabled() && is_active_sidebar('cm-answers-sidebar')):
+    $maxWidth      = CMA_AnswerThread::getSidebarMaxWidth();
+    $maxWidthStyle = ($maxWidth > 0) ? 'max-width:' . $maxWidth . 'px' : '';
+    ?>
+    <div id="secondary" role="complementary" class="widget-area cma-sidebar" style="<?php echo $maxWidthStyle ?>">
+        <?php dynamic_sidebar('cm-answers-sidebar'); ?>
+    </div>
+    <?php
+endif;

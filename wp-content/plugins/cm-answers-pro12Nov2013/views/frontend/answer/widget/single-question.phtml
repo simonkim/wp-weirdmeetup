@@ -1,0 +1,172 @@
+<?php
+global $post;
+the_post();
+
+$thread                      = CMA_AnswerThread::getInstance($post->ID);
+$currentSort                 = !empty($_GET['sort']) ? $_GET['sort'] : CMA_AnswerThread::getAnswerSortingBy();
+$answers                     = $thread->getAnswers($currentSort);
+$attachment                  = $thread->getAttachment();
+$threadAuthorId              = $thread->getAuthor()->ID;
+$cat                         = $thread->getCategory();
+$usersStats[$threadAuthorId] = '(' . __('Questions', 'cm-answers-pro') . ':' .
+        CMA_AnswerThread::getCountQuestionsByUser($threadAuthorId) . ':' .
+        __('Answers', 'cm-answers-pro') . CMA_AnswerThread::getCountAnswersByUser($threadAuthorId) . ')';
+?>
+<header class="entry-header">
+    <h1 class="entry-title">
+        <?php echo $thread->getTitle(); ?>
+    </h1>
+    <a class="cma-backlink" href="<?php echo CMA::getBacklink(); ?>"> &laquo; <?php _e('Back to Previous Page', 'cm-answers-pro'); ?></a>
+    <?php echo CMA_AnswerThread::getTags($post->ID); ?>
+</header>
+
+<?php
+do_action('CMA_show_messages');
+?>
+
+<table class="cma-answers-list">
+    <tr>
+        <td class="cma-answer-content">
+
+            <?php if(CMA_AnswerThread::showSocial() && $attachment): ?>
+                <div class="cma-attachment"><?php _e('Attachment', 'cm-answers-pro'); ?>:
+                    <a href="<?php echo $attachment['link']; ?>"><?php echo $attachment['name']; ?></a></div>
+            <?php endif; ?>
+
+            <div class="cma-answer-meta">
+                <div class="cma-answer-author">
+                    <?php
+                    if(CMA_AnswerThread::showGravatars())
+                    {
+                        echo get_avatar($thread->getAuthorId(), 32);
+                    }
+                    printf(__('Posted by %s', 'cm-answers-pro'), $thread->getAuthor()->display_name);
+                    if(CMA_AnswerThread::getShowUserStats())
+                    {
+                        echo $usersStats[$threadAuthorId];
+                    }
+                    ?>
+                </div>
+
+                <div class="cma-answer-date">
+                    <?php
+                    printf(__('Asked on %s', 'cm-answers-pro'), $thread->getCreationDate());
+                    ?>
+                </div>
+
+                <?php if($cat): ?>
+                    <div class="cma-answer-category">
+                        <?php _e('Category', 'cm-answers-pro'); ?>: <?php echo $cat; ?>
+                    </div>
+                <?php endif; ?>
+
+                <div class="cma-answer-views">
+                    <?php
+                    printf(__('%s Views', 'cm-answers-pro'), $thread->getViews());
+                    ?>
+                </div>
+
+                <?php
+                if(CMA_AnswerThread::showSocial())
+                {
+                    echo CMA_BaseController::_loadView('answer/widget/social');
+                }
+                ?>
+            </div>
+
+            <div class="cma-answer-body">
+                <?php echo $thread->getContent(); ?>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<?php if(!empty($answers)): ?>
+
+    <?php if(CMA_AnswerThread::isRatingAllowed()): ?>
+        <ul class="cma-thread-orderby cma-answers-orderby">
+            <?php
+            $sortingByDateClass = ($currentSort == CMA_AnswerThread::ANSWER_SORTING_BY_DATE) ? 'cma-current-sort' : '';
+            $sortingByDateLabel = (CMA_AnswerThread::isAnswerSortingDesc()) ? __('Newest', 'cm-answers-pro') : __('Oldest', 'cm-answers-pro');
+
+            $sortingByVotesClass = ($currentSort == CMA_AnswerThread::ANSWER_SORTING_BY_VOTES) ? 'cma-current-sort' : '';
+            $sortingByVotesLabel = (CMA_AnswerThread::isAnswerSortingDesc()) ? __('Highest rating', 'cm-answers-pro') : __('Lowest rating', 'cm-answers-pro');
+            ?>
+            <li class="<?php echo $sortingByDateClass ?>">
+                <a href="?sort=newest"><?php echo $sortingByDateLabel; ?></a>
+            </li>
+            <li class="<?php echo $sortingByVotesClass; ?>">
+                <a href="?sort=votes"><?php echo $sortingByVotesLabel; ?></a>
+            </li>
+        </ul>
+    <?php endif; ?>
+
+    <table class="cma-answers-list">
+        <?php foreach($answers as $answer): ?>
+            <?php
+            $commentId = 'id="comment-' . $answer['id'] . '"';
+            ?>
+            <tr data-comment-id="<?php echo $answer['id']; ?>" class="cma-comment-tr">
+                <?php if(CMA_AnswerThread::isRatingAllowed()): ?>
+                    <td class="cma-answer-rating" >
+                        <div class="cma-answer-rating-loading"></div>
+                        <a class="cma-thumbs-up" title="Thumbs Up!">▲</a>
+                        <div class="cma-answer-rating-count"><?php echo $answer['rating']; ?></div>
+                        <?php if(CMA_AnswerThread::isNegativeRatingAllowed()): ?>
+                            <a class="cma-thumbs-down" title="Thumbs Down!">▼</a>
+                        <?php endif; ?>
+                    </td>
+                <?php else: ?>
+                    <td class="cma-answer-norating"></td>
+                <?php endif; ?>
+
+                <?php
+                $answerContentAdditionalClass = CMA_AnswerThread::isRatingAllowed() ? 'cma-answer-norating-content' : '';
+                ?>
+                <td class="cma-answer-content <?php echo $answerContentAdditionalClass; ?>">
+                    <a <?php echo $commentId; ?> class="anchor"></a>
+                    <div class="cma-answer-meta">
+                        <div class="cma-answer-author">
+                            <?php
+                            if(CMA_AnswerThread::showGravatars())
+                            {
+                                echo get_avatar($answer['authorId'], 32);
+                            }
+                            printf(__('Posted by %s', 'cm-answers-pro'), $answer['authorUrl']);
+                            if(CMA_AnswerThread::getShowUserStats())
+                            {
+                                if(!isset($usersStats[$answer['authorId']]))
+                                {
+                                    $usersStats[$answer['authorId']] = '(' . __('Questions', 'cm-answers-pro') . ':' .
+                                            CMA_AnswerThread::getCountQuestionsByUser($answer['authorId']) . ':' .
+                                            __('Answers', 'cm-answers-pro') . CMA_AnswerThread::getCountAnswersByUser($answer['authorId']) . ')';
+                                }
+                                echo $usersStats[$answer['authorId']];
+                            }
+                            ?>
+                        </div>
+                        <div class="cma-answer-date">
+                            <?php printf(__('Answered On %s', 'cm-answers-pro'), $answer['date']); ?>
+                        </div>
+                    </div>
+                    <div class="cma-answer-body">
+                        <?php echo $answer['content']; ?>
+                    </div>
+                </td>
+            </tr>
+            <?php
+        endforeach;
+    endif;
+    ?>
+</table>
+
+<?php
+/*
+ * CMA-Form
+ * - Answer form if the user is logged in
+ * - Login form if the user is not logged in
+ */
+if(!$thread->isResolved() || CMA_AnswerThread::isAnswerAfterResolved())
+{
+    echo CMA_BaseController::_loadView('answer/widget/answer-form', compact('post', 'thread'));
+}

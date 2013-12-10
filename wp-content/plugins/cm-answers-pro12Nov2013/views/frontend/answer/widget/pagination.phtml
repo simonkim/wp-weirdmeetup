@@ -1,0 +1,30 @@
+<div class="cma-pagination">
+    <?php
+
+    /* @var $maxNumPages integer */
+    /* @var $paged integer */
+    /* @var $arguments array */
+
+    global $wp_rewrite;
+
+    $pagination_args = array(
+        'base' => @add_query_arg('paged', '%#%'),
+        'format' => '',
+        'total' => $maxNumPages,
+        'current' => max(1, $paged),
+//        'add_args' => $add_args
+//        'add_args' => get_query_var('search')
+    );
+
+//    if($wp_rewrite->using_permalinks())
+//    {
+//        $pagination_args['base'] = user_trailingslashit(trailingslashit(remove_query_arg('s', get_pagenum_link(1, false))) . 'page/%#%/', 'paged');
+//    }
+//    if(!empty($wp_query->query_vars['s']))
+//    {
+//        $pagination_args['add_args'] = array('s' => get_query_var('s'));
+//    }
+
+    echo paginate_links($pagination_args);
+    ?>
+</div>

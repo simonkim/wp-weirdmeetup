@@ -1,0 +1,43 @@
+<a class="cma-backlink" href="<?php echo CMA::getBacklink(); ?>"> &laquo; <?php _e('Back to Previous Page', 'cm-answers-pro'); ?></a>
+
+<?php if(CMA_AnswerThread::showGravatars()) echo '<a href="' . CMA_AnswerThread::getGravatarLink($user_id) . '" rel="nofollow">' . get_avatar($user_id) . '</a>'; ?>
+
+<?php if(!empty($socialLinks)): ?>
+    <h2><?php _e('Social Profiles', 'cm-answers-pro'); ?>:</h2>
+    <?php
+    foreach($socialLinks as $provider => $link)
+    {
+        $providerimage = CMA_RESOURCE_URL . '/imgs/s_' . $provider . '.png';
+        ?>
+        <a href="<?php echo esc_attr($link); ?>" target="_blank" rel="nofollow"><img src="<?php echo $providerimage; ?>" /></a>
+        <?php
+    }
+    ?>
+<?php endif; ?>
+
+
+<h2><?php _e('Questions', 'cm-answers-pro'); ?>:</h2>
+<?php
+$public = true;
+
+$displayOptions = array(
+    'hideQuestions' => 0,
+    'tags' => 0,
+    'pagination' => 0,
+    'form' => 0,
+    'categories' => 0,
+    'search' => 0,
+    'views' => 1,
+    'votes' => 1,
+    'answers' => 1,
+);
+
+echo CMA_BaseController::_loadView('answer/widget/questions', compact('questions', 'public', 'displayOptions'));
+?>
+
+<div class="cma-answers-list">
+    <h2><?php _e('Answers', 'cm-answers-pro'); ?>:</h2>
+    <?php
+    echo CMA_BaseController::_loadView('answer/widget/my-answers', compact('answers', 'public'));
+    ?>
+</div>

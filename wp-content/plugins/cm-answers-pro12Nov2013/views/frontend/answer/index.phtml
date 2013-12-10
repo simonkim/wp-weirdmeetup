@@ -1,0 +1,186 @@
+<?php
+global $wp_query;
+/*
+ *  Disclaimer text
+ */
+if(CMA_AnswerThread::isDisclaimerApproved())
+{
+    add_action('wp_enqueue_scripts', 'cma_enqueue_disclaimer');
+
+    function cma_enqueue_disclaimer()
+    {
+        wp_register_script('cma_disclaimer', CMA_URL . '/views/resources/disclaimer.js');
+        wp_localize_script('cma_disclaimer', 'cma_disclaimer_opts', array(
+            'content' => CMA_AnswerThread::getDisclaimerContent(),
+            'acceptText' => CMA_AnswerThread::getDisclaimerContentAccept(),
+            'rejectText' => CMA_AnswerThread::getDisclaimerContentReject()));
+        wp_enqueue_script('cma_disclaimer');
+    }
+
+}
+get_header();
+/*
+ * Inline styles
+ */
+echo CMA_BaseController::_loadView('answer/widget/inline-styles');
+?>
+
+<div class="cma-main">
+    <div class="cma-wrapper">
+        <div id="primary" class="site-content cma-content">
+            <div id="content" role="main">
+
+                <header class="entry-header">
+                    <?php if(!is_tax(CMA_AnswerThread::CAT_TAXONOMY)): ?>
+                        <?php
+                        $qs = '?';
+                        if(isset($_GET["sort"])) $qs .= 'sort=' . $_GET["sort"] . "&";
+                        if(isset($_GET["search"])) $qs .= 'search=' . $_GET["search"] . "&";
+                        if(isset($_GET["cmatag"])) $qs .= 'cmatag=' . $_GET["cmatag"] . "&";
+                        ?>
+                        <select name="cma_question_type" id="cma_question_type" data-url="<?php echo home_url() . '/' . CMA_AnswerThread::getAnswersPermalink() . '/' . $qs; ?>">
+                            <option value="all" <?php if(!isset($_GET["question_type"]) || $_GET["question_type"] == "all") echo 'selected="selected"'; ?>>All questions</option>
+                            <option value="ans" <?php if(isset($_GET["question_type"]) && $_GET["question_type"] == "ans") echo 'selected="selected"'; ?>>Answered questions</option>
+                            <option value="unans" <?php if(isset($_GET["question_type"]) && $_GET["question_type"] == "unans") echo 'selected="selected"'; ?>>Unanswered questions</option>
+                        </select>
+
+                    <?php endif; ?>
+
+                    <h1 class="entry-title">
+                        <?php
+                        $foundPosts = $wp_query->found_posts;
+                        if(is_tax(CMA_AnswerThread::CAT_TAXONOMY)):
+                            ?>
+                            <?php
+                            single_term_title();
+                            echo ' (' . $foundPosts . ')';
+                            ?>
+                        <?php else: ?>
+                            <?php
+                            post_type_archive_title();
+                            echo isset($_GET['cmatag']) ? ' for tag "' . $_GET['cmatag'] . '"' : '';
+                            echo ' (' . $foundPosts . ')';
+                            ?>
+                        <?php endif; ?>
+                    </h1>
+                </header>
+
+                <div class="cma-thread-search">
+                    <form method="GET" action="">
+                        <input type="text" name="search" placeholder="<?php
+                        _e('Search Questions...', 'cm-answers-pro');
+                        ?>" value="<?php echo esc_attr(get_query_var('search')); ?>"/>
+                        <input type="submit" value="&gt;" />
+                    </form>
+                </div>
+
+                <?php
+                $categories = CMA_AnswerThread::getCategoriesTree();
+                if(!empty($categories)):
+                    ?>
+                    <select id="thread_category" class="cma-filter-category" onchange="window.location = this.options[this.selectedIndex].value">
+                        <option value="<?php echo esc_attr(get_post_type_archive_link(CMA_AnswerThread::POST_TYPE)); ?>"><?php
+                            _e('All categories', 'cm-answers-pro');
+                            ?></option>
+                        <?php foreach($categories as $key => $val): ?>
+                            <option value="<?php
+                            echo esc_attr(get_term_link($key, CMA_AnswerThread::CAT_TAXONOMY));
+                            ?>"
+                                    <?php if(get_queried_object()->term_id == $key) echo ' selected="selected"'; ?>
+                                    ><?php echo $val; ?></option>
+                                <?php endforeach; ?>
+                    </select>
+                <?php endif; ?>
+
+                <?php
+                $currentSort    = !empty($_GET['sort']) ? $_GET['sort'] : 'newest';
+                $args           = array();
+                if(isset($_GET["cmatag"])) $args['cmatag'] = $_GET["cmatag"];
+                ?>
+
+                <ul class="cma-thread-orderby">
+                    <li<?php if($currentSort == 'newest'): ?> class="cma-current-sort"<?php endif; ?>>
+                        <a href="<?php
+                        echo add_query_arg(array_merge(array(
+                            'sort' => 'newest'), $args), get_pagenum_link(0));
+                        ?>"><?php _e('Newest', 'cm-answers-pro'); ?>
+                        </a>
+                    </li>
+                    <li<?php if($currentSort == 'hottest'): ?> class="cma-current-sort"<?php endif; ?>>
+                        <a href="<?php
+                        echo add_query_arg(array_merge(array(
+                            'sort' => 'hottest'), $args), get_pagenum_link(0));
+                        ?>">
+                               <?php _e('Hottest', 'cm-answers-pro'); ?>
+                        </a>
+                    </li>
+                    <?php if(CMA_AnswerThread::isRatingAllowed()): ?><li<?php if($currentSort == 'votes'): ?> class="cma-current-sort"<?php endif; ?>>
+                            <a href="<?php
+                            echo add_query_arg(array_merge(array(
+                                'sort' => 'votes'), $args), get_pagenum_link(0));
+                            ?>">
+                                   <?php _e('Most votes', 'cm-answers-pro'); ?>
+                            </a>
+                        </li><?php endif; ?>
+                    <li<?php if($currentSort == 'views'): ?> class="cma-current-sort"<?php endif; ?>>
+                        <a href="<?php
+                        echo add_query_arg(array_merge(array(
+                            'sort' => 'views'), $args), get_pagenum_link(0));
+                        ?>">
+                               <?php _e('Most views', 'cm-answers-pro'); ?>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="cma-clear"></div>
+
+                <?php
+                $questionIds = array();
+                foreach($wp_query->get_posts() as $key => $post)
+                {
+                    $questionIds[] = $post->ID;
+                }
+                $questions = array_map(array('CMA_AnswerThread', 'getInstance'), $questionIds);
+
+                $displayOptions = array(
+                    'hideQuestions' => 0,
+                    'tags' => 1,
+                    'pagination' => 1,
+                    'form' => 1,
+                    'categories' => 1,
+                    'search' => 0,
+                    'views' => CMA_AnswerThread::isViewsAllowed(),
+                    'votes' => CMA_AnswerThread::isRatingAllowed(),
+                    'answers' => CMA_AnswerThread::isAnswersAllowed(),
+                    'updated' => CMA_AnswerThread::isUpdatedAllowed(),
+                    'authorinfo' => CMA_AnswerThread::isAuthorAllowed(),
+                    'statusinfo' => 0,
+                );
+
+                /*
+                 * Not AJAX
+                 */
+                $isAjax = 0;
+                echo CMA_BaseController::_loadView('answer/widget/questions', compact('questions', 'displayOptions', 'isAjax'));
+                ?>
+                <div class="cma-clear"></div>
+            </div>
+
+            <?php if(CMA_AnswerThread::isReferralEnabled() && CMA_AnswerThread::getAffiliateCode()): ?>
+                <span class="cma_referral_link">
+                    <a href="http://www.cminds.com/store/answers/?af=<?php echo CMA_AnswerThread::getAffiliateCode() ?>">
+                        <img src="http://static.cminds.com/wp-content/uploads/download_answer.png" height="22"/>
+                    </a>
+                </span>
+            <?php endif; ?>
+        </div>
+        <?php
+        /*
+         * CMA-Sidebar
+         */
+        echo CMA_BaseController::_loadView('answer/widget/sidebar');
+        ?>
+    </div>
+</div>
+<?php
+get_footer();

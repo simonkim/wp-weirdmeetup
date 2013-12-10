@@ -1,0 +1,168 @@
+<?php
+do_action('CMA_show_messages');
+$arguments = compact('pagination', 'limit', 'cat', 'sort', 'tiny', 'author', 'displayOptions', 'maxNumPages', 'isAjax');
+
+echo CMA_BaseController::_loadView('answer/widget/inline-styles');
+
+global $wp;
+$current_url = home_url(add_query_arg(array(), $wp->request), 'relative');
+?>
+
+<div class="cma-questions-container cma-container" data-pagination='<?php echo json_encode($arguments); ?>'>
+
+    <?php if(isset($_GET["sort"]) || isset($_GET["cmatag"]) || isset($_GET["sort"]) || isset($_GET["search"])) : ?>
+        <a class="cma-backlink cma-backlink-ajaxtag" href="<?php echo $current_url ?>">« Back to Full Questions List</a><br/>
+    <?php endif; ?>
+
+    <?php if(!$displayOptions['hideQuestions']): ?>
+
+        <?php if($displayOptions['search']): ?>
+            <div class="cma-thread-search">
+                <form method="GET" action="" id="cma-ajax-search">
+                    <input type="text" name="search" id="cma-ajax-search-term" placeholder="<?php _e('Search Questions...', 'cm-answers-pro'); ?>" value="<?php echo esc_attr(get_query_var('search')); ?>"/>
+                    <input type="submit" value="&gt;" class="cma-ajax-search" />
+                </form>
+            </div>
+        <?php endif; ?>
+
+        <table class="cma-thread-list">
+
+            <thead>
+                <tr>
+                    <?php if($displayOptions['votes']): ?>
+                        <th><?php _e('Votes', 'cm-answers-pro'); ?></th>
+                    <?php endif; ?>
+
+                    <?php if($displayOptions['views']): ?>
+                        <th><?php _e('Views', 'cm-answers-pro'); ?></th>
+                    <?php endif ?>
+
+                    <?php if($displayOptions['answers']): ?>
+                        <th><?php _e('Answers', 'cm-answers-pro'); ?></th>
+                    <?php endif ?>
+
+                    <?php if($displayOptions['statusinfo']): ?>
+                        <th><?php _e('Status', 'cm-answers-pro'); ?></th>
+                    <?php endif; ?>
+
+                    <th style="text-align:left;"><?php _e('Question', 'cm-answers-pro'); ?></th>
+                </tr>
+            </thead>
+
+            <?php foreach($questions as $thread): ?>
+
+                <?php
+                $category              = $thread->getCategory();
+                $numberOfAnswers       = (CMA_AnswerThread::isVotesNo() && $thread->getNumberOfAnswers() == 0) ? 'no' : $thread->getNumberOfAnswers();
+                $additionalThreadClass = $thread->isSticky() ? 'cma_sticky_background' : '';
+                ?>
+
+                <tr class="<?php echo $additionalThreadClass; ?>">
+
+                    <?php if($displayOptions['votes']): ?>
+                        <td class="cma-thread-meta">
+                            <div class="cma-thread-numbers cma-thread-votes"><div class="cma-thread-numbers-count cma-thread-votes-count">
+                                    <?php
+                                    echo (CMA_AnswerThread::isVotesNo() && $thread->getVotes() === 0) ? 'no' : $thread->getVotes();
+                                    ?>
+                                </div>
+                                <div class="cma-thread-numbers-caption cma-thread-votes-caption"><?php echo _n('vote', 'votes', $votes, 'cm-answers-pro'); ?></div>
+                            </div>
+                        </td>
+                    <?php endif; ?>
+
+                    <?php if($displayOptions['views']): ?>
+                        <td class="cma-thread-meta">
+                            <div class="cma-thread-numbers cma-thread-views">
+                                <div class="cma-thread-numbers-count cma-thread-views-count">
+                                    <?php echo (CMA_AnswerThread::isVotesNo() && $thread->getViews() === 0) ? 'no' : $thread->getViews(); ?></div>
+                                <div class="cma-thread-numbers-caption cma-thread-views-caption"><?php echo _n('view', 'views', $views, 'cm-answers-pro'); ?></div>
+                            </div>
+                        </td>
+                    <?php endif; ?>
+
+                    <?php if($displayOptions['answers']): ?>
+                        <td class="cma-thread-meta">
+                            <div class="cma-thread-numbers cma-thread-answers<?php if($numberOfAnswers == 0 || $numberOfAnswers == 'no'): ?> cma-thread-no-answers<?php endif; ?>">
+                                <div class="cma-thread-numbers-count cma-thread-answers-count">
+                                    <?php echo $numberOfAnswers; ?>
+                                </div>
+                                <div class="cma-thread-numbers-caption cma-thread-answers-caption">
+                                    <?php echo _n('answer', 'answers', $numberOfAnswers, 'cm-answers-pro'); ?>
+                                </div>
+                            </div>
+                        </td>
+                    <?php endif; ?>
+
+                    <?php if($displayOptions['statusinfo']): ?>
+                        <td class="cma-thread-meta">
+                            <div class="cma-thread-numbers cma-thread-answers">
+                                <div class="cma-thread-numbers-count cma-thread-answers-count">
+                                    &nbsp;
+                                </div>
+                                <div class="cma-thread-numbers-caption cma-thread-answers-caption">
+                                    <?php echo $thread->getStatus(); ?>
+                                </div>
+                            </div>
+                        </td>
+                    <?php endif; ?>
+
+                    <td class="cma-thread-summary">
+
+                        <div class="cma-thread-title">
+                            <a href="<?php echo $thread->getPermalink(!$isAjax); ?>" title="<?php echo $thread->getContent(100, true); ?>"><?php echo $thread->getTitle(); ?></a>
+                        </div>
+
+                        <div class="cma-thread-summary-right">
+                            <?php if($displayOptions['authorinfo']): ?>
+                                <div class="cma-thread-updated">
+                                    <?php printf(__('asked %s by %s', 'cm-answers-pro'), CMA_AnswerThread::renderDaysAgo($thread->getUnixDate(), false), $thread->getAuthor()->display_name); ?>
+                                </div>
+                            <?php endif; ?>
+
+                            <?php if($displayOptions['updated']): ?>
+                                <div class="cma-thread-updated">
+                                    <?php printf(__('updated %s by %s', 'cm-answers-pro'), CMA_AnswerThread::renderDaysAgo($thread->getUnixUpdated(), false), $thread->getLastPosterName()); ?>
+                                </div>
+                            <?php endif; ?>
+
+                            <?php if($displayOptions['categories'] && $category): ?>
+                                <div class="cma-thread-category">
+                                    <?php _e('Category', 'cm-answers-pro'); ?>: <?php echo $category; ?>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+
+                        <?php
+                        if($displayOptions['tags'])
+                        {
+                            echo CMA_AnswerThread::getTags($thread->getId(), !$isAjax);
+                        }
+                        ?>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </table>
+    <?php endif; ?>
+
+    <?php
+    if($displayOptions['pagination'])
+    {
+        $arguments           = isset($arguments) ? array_merge($arguments, $_GET) : array();
+        $arguments['search'] = isset($search) ? $search : '';
+        echo CMA_AnswerController::showPagination($arguments);
+    }
+    ?>
+
+    <?php
+    if($displayOptions['form'])
+    {
+        /*
+         * CMA-QuestionForm
+         * - Question form if the user is logged in
+         * - Login form if the user is not logged in
+         */
+        echo CMA_BaseController::_loadView('answer/widget/question-form', compact('post', 'thread', 'catId'));
+    }
+    ?>
+</div>

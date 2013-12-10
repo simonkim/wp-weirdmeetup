@@ -1,0 +1,22 @@
+<div class="cma-login">
+    <?php _e('Please log in to post questions', 'cm-answers-pro'); ?>:<br />
+    <div class="cma-login-wp"><?php wp_login_form(); ?></div>
+    <?php
+    $socialProviders  = array('facebook', 'google', 'linkedin');
+    $socialLoginLinks = array();
+    foreach($socialProviders as $provider)
+    {
+        if(CMA_AuthController::isProviderConfigured($provider))
+        {
+            $providerimage = CMA_RESOURCE_URL . '/imgs/s_' . $provider . '.png';
+
+            $socialLoginLinks[] = '<img src="' . $providerimage . '"  height="18" >&nbsp;<a href="' . CMA_BaseController::getUrl('auth', $provider, array('redirect' => ( is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'])) . '" class="cma-' . $provider . '-login">' . ucfirst($provider) . '</a>';
+        }
+    }
+    if(!empty($socialLoginLinks))
+    {
+        echo '<div class="cma-login-social">' . __('Social Login via', 'cm-answers-pro') . ': ';
+        echo implode(', ', $socialLoginLinks);
+        echo '</div>';
+    }
+    ?></div>

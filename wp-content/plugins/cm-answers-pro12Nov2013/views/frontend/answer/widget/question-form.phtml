@@ -1,0 +1,110 @@
+<?php
+$additionalFormClass = (!CMA_AnswerThread::getMarkupBox()) ? 'no-markup-box' : '';
+?>
+<div class="cma-form-container cma-question-form-container <?php echo $additionalFormClass ?>">
+    <?php if(is_user_logged_in() && (CMA_AnswerThread::isUserPostAllowed() || (current_user_can('publish_posts')))): ?>
+        <form method="post" class="cma-thread-add" id="cma-thread-add" action="<?php echo get_post_type_archive_link('cma_thread'); ?>" enctype="multipart/form-data">
+            <input type="hidden" name="cma-action" value="add" />
+            <input type="hidden" name="cma-referrer" value="<?php echo esc_attr($_SERVER['REQUEST_URI']); ?>" />
+
+            <h3><?php _e('Ask a Question', 'cm-answers-pro'); ?></h3>
+
+            <?php if(!$tiny && CMA_AnswerThread::getMarkupBox()): ?>
+                <ul class="cma-form-notes">
+                    <li><?php _e('Allow markup', 'cm-answers-pro'); ?>: &lt;strong&gt;, &lt;em&gt;, &lt;a&gt;</li>
+                    <li><?php _e('Wrap your code using', 'cm-answers-pro'); ?> &lt;pre&gt;&lt;/pre&gt;</li>
+                </ul>
+            <?php endif; ?>
+
+            <?php
+            $populatedData         = CMA_BaseController::getPopulatedData();
+            ?>
+            <div class="cma-form-input">
+                <input type="text" size="50" name="thread_title" placeholder="<?php _e('Question Title', 'cm-answers-pro'); ?>"  value="<?php if(isset($populatedData['thread_title'])) echo esc_attr($populatedData['thread_title']); ?>"/>
+            </div>
+
+            <div class="cma-form-input">
+                <?php
+                $questionEditorContent = '';
+                if(isset($populatedData['thread_comment']))
+                {
+                    $questionEditorContent = CMA_AnswerThread::getRichtextEditor() ? $populatedData['thread_comment'] : stripslashes(esc_html($populatedData['thread_comment']));
+                }
+
+                if(CMA_AnswerThread::getRichtextEditor())
+                {
+                    wp_editor($questionEditorContent, 'question-content-form', array('textarea_name' => 'thread_comment', 'textarea_rows' => 3));
+                }
+                else
+                {
+                    $placeholder = __('What is your Question about?', 'cm-answers-pro');
+                    if(CMA_AnswerThread::isQuestionDescriptionOptional())
+                    {
+                        $placeholder .= __(' (optional)', 'cm-answers-pro');
+                    }
+                    ?>
+                    <textarea id="question-content-form" name="thread_comment" cols="50" rows="3" placeholder="<?php echo $placeholder; ?>"><?php echo $questionEditorContent; ?></textarea>
+                    <?php
+                }
+                ?>
+            </div>
+
+            <?php if(CMA_AnswerThread::isTagsAllowed()) : ?>
+                <div class="cma-form-input">
+                    <input type="text" size="50" name="thread_tags" placeholder="<?php _e('Tags', 'cm-answers-pro'); ?>" value="<?php if(isset($populatedData['thread_tags'])) echo esc_attr($populatedData['thread_tags']); ?>"/>
+                </div>
+            <?php endif; ?>
+
+            <?php if(CMA_AnswerThread::isAttachmentAllowed()): ?>
+                <?php
+                $attachmentLabel = __('Attachment', 'cm-answers-pro') . '(' . __('optional', 'cm-answers-pro') . ') - ' . implode(', ', CMA_AnswerThread::getAttachmentAllowed()) . '(max. ' . CMA_AnswerThread::convertBytesToShorthand(CMA_AnswerThread::getAttachmentMaxSize()) . ')';
+//                $maxFileSize     = ini_get('upload_max_filesize') ? CMA_AnswerThread::convertShorthandToBytes(ini_get('upload_max_filesize')) : CMA_AnswerThread::getAttachmentMaxSize();
+                $maxFileSize     = ini_get('upload_max_filesize') ? ini_get('upload_max_filesize') : CMA_AnswerThread::getAttachmentMaxSize();
+                ?>
+                <div class="cma-form-options">
+                    <label class="cma-form-option-label">
+                        <?php echo $attachmentLabel; ?>
+                    </label>
+                </div>
+                <div class="cma-form-input">
+                    <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $maxFileSize; ?>" />
+                    <input type="file" name="attachment" />
+                </div>
+            <?php endif; ?>
+
+            <?php
+            if($catId)
+            {
+                echo '<input type="hidden" name="thread_category" value="' . $catId . '" />';
+            }
+            else
+            {
+                $categories = CMA_AnswerThread::getCategories();
+                if($categories):
+                    ?>
+                    <div class="cma-form-input">
+                        <select name="thread_category">
+                            <option value=""><?php _e('Choose category', 'cm-answers-pro'); ?></option>
+                            <?php foreach($categories as $key => $val): ?>
+                                <option value="<?php echo $key; ?>" <?php if((!isset($populatedData['thread_category']) && get_queried_object()->term_id == $key) || $populatedData['thread_category'] == $key) echo ' selected="selected"'; ?>><?php echo $val; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <?php
+                endif;
+            }
+            ?>
+            <div class="cma-form-options">
+                <label class="cma-form-option-label">
+                    <input name="thread_notify" type="checkbox" value="1" <?php if(isset($populatedData['thread_notify'])) echo 'checked="checked"'; ?>/>
+                    <?php _e('Notify me of follow', 'cm-answers-pro'); ?>
+                </label>
+            </div>
+            <input type="submit" value="<?php _e('Add Question', 'cm-answers-pro'); ?>" />
+        </form>
+        <?php
+    elseif(!is_user_logged_in()):
+        do_action('CMA_login_form');
+    endif;
+    ?>
+</div>
