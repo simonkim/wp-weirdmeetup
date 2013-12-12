@@ -40,6 +40,8 @@ get_header(); ?>
             <?php endif; ?>
             
             <article class="entry clr">
+		
+
                 <?php the_content(); ?>
             </article><!-- /entry -->
             
