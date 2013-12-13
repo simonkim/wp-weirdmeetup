@@ -1,6 +1,6 @@
 === Starbox - the Author Box for Humans ===
 Contributors: florinmuresan,cifi
-Tags: author,publisher,meta,post,posts,page,pages,google,facebook,snippet,plugin,html5,vcard,klout,users,user,author box,rich snippet
+Tags: author box‎,author,publisher,meta,post,posts,page,pages,google,facebook,snippet,plugin,html5,vcard,klout,users,user,author box,rich snippet,author bio, author bio box,bio
 Requires at least: 3.1
 Tested up to: 3.7.1
 Stable tag: trunk
@@ -96,6 +96,10 @@ So get your very own Starbox now:
 
 
 == Changelog ==
+= 1.0.8 =
+* Fixed shortcode for multiple authors
+* Fixed display css issues
+
 = 1.0.7 =
 * Fixed shortcode bugs
 * Fixed display bugs

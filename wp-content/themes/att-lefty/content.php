@@ -53,14 +53,28 @@ else { ?>
 	            <?php if ( of_get_option('blog_tags', '1' ) =='1' ) : ?>
 			<?php the_tags(''); ?>
 			<?php endif; ?></li>
-            
+                        <?php // @haruair 구독수 추가 ?>
+                        <li><i class="icon-bookmark"></i><?php echo get_post_meta( $post->ID, 'jetpack-post-views', true ); ?> read</li>
             	</ul>
        
 
 </header>
 
             <div class="loop-entry-excerpt">
-            	<?php the_excerpt(); ?>
+                <?php // @haruair 요약 깔끔 돋게 처리 ?>
+            	<?php echo wp_trim_words( get_the_excerpt(), '40');?>
+                <?php // @haruair 더 읽기 링크 추가 ?>
+<?php
+$synd = get_post_meta( $post->ID, 'syndication_permalink', true);
+if($synd != false){
+    $link = $synd;
+    $target = "_blank";
+}else{
+    $link = get_permalink( $post->ID );
+    $target = "";
+}
+?>
+                <div class="link-readmore"><a href="<?php echo $link;?>" target="<?php echo $target;?>">[Read original post]</a></div>
             </div><!-- .loop-entry-excerpt -->
             
         </div><!-- .loop-entry-details -->

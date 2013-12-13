@@ -17,7 +17,15 @@
 </head>
 
 <body <?php body_class(); ?>>
+<!--
 
+<?php echo $_SERVER['REQUEST_URI'];?>
+
+<?php echo $_SERVER['QUERY_STRING'];?>
+
+<?php print_r($_SERVER);?>
+
+-->
 <?php att_hook_site_before(); ?>
 
     <div id="wrap" class="container clr">

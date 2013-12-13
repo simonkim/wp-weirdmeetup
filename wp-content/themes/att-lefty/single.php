@@ -14,13 +14,14 @@ get_header(); ?>
     <header class="page-header"> 
         <h1 class="page-header-title"><?php the_title(); ?></h1>
         <ul class="meta single-meta clr">
-            <li><i class="icon-time"></i><?php the_date(); ?></li>    
             <li><i class="icon-user"></i><?php the_author_posts_link(); ?></li>
+            <li><i class="icon-time"></i><?php the_date(); ?></li>
 	    <li><i class="icon-folder-open"></i>
 	            <?php if ( of_get_option('blog_tags', '1' ) =='1' ) : ?>
 			<?php the_tags(''); ?>
 			<?php endif; ?></li>
-            
+                        <li><i class="icon-bookmark"></i><?php echo get_post_meta( $post->ID, 'jetpack-post-views', true ); ?> read</li>
+
             	</ul><!-- .meta -->
 <!-- @minieetea 네비게이션 좌우 버튼 제거
         <nav class="single-nav clr"> 
