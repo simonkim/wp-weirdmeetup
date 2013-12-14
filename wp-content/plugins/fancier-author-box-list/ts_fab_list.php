@@ -102,6 +102,11 @@ function get_social_meta_by_user($user){
 	if( get_user_meta( $user->ID, 'ts_fab_facebook', true) )
 	    $social .= '<a href="http://facebook.com/' . get_user_meta( $user->ID, 'ts_fab_facebook', true ) . '" title="Facebook"><img src="' . plugins_url( 'images/facebook.png', __FILE__ ) . '" width="24" height="24" alt="' . __( 'My Facebook profile', 'ts-fab' ) . '" /></a>';
 
+/*@minieetea*/
+	// Github
+	if( get_user_meta( $user->ID, 'ts_fab_github', true) )
+	    $social .= '<a href="http://github.com/' . get_user_meta( $user->ID, 'ts_fab_github', true ) . '" title="Github Repository"><img src="' . plugins_url( 'http://we.weirdmeetup.com/wp-content/uploads/2013/12/github_icon.png', __FILE__ ) . '" width="24" height="24" alt="' . __( 'My Github Repository', 'ts-fab' ) . '" /></a>';
+
 	// Google+
 	if( get_user_meta( $user->ID, 'ts_fab_googleplus', true) )
 	    $social .= '<a href="http://plus.google.com/' . get_user_meta( $user->ID, 'ts_fab_googleplus', true ) . '?rel=author" title="Google+"><img src="' . plugins_url( 'images/googleplus.png', __FILE__ ) . '" width="24" height="24" alt="' . __( 'My Google+ profile', 'ts-fab' ) . '" /></a>';

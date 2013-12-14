@@ -36,6 +36,18 @@ get_header(); ?>
     <div id="primary" class="content-area clr">
 		<div id="content" class="site-content" role="main">
     
+                <?php // @haruair 더 읽기 링크 추가 ?>
+<?php
+$synd = get_post_meta( $post->ID, 'syndication_permalink', true);
+if($synd != false){
+    $link = $synd;
+    $target = "_blank";
+}else{
+    $link = get_permalink( $post->ID );
+    $target = "";
+}
+?>
+                <div class="link-readmore"><a href="<?php echo $link;?>" target="<?php echo $target;?>">[Read original post]</a></div>
     		<?php if ( !post_password_required() ) : ?>           
 			<?php get_template_part('content', get_post_format() ); ?>            
             <?php endif; ?>
