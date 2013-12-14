@@ -20,7 +20,7 @@ get_header(); ?>
 	            <?php if ( of_get_option('blog_tags', '1' ) =='1' ) : ?>
 			<?php the_tags(''); ?>
 			<?php endif; ?></li>
-                        <li><i class="icon-bookmark"></i><?php echo get_post_meta( $post->ID, 'jetpack-post-views', true ); ?> read</li>
+<!--                        <li><i class="icon-bookmark"></i><?php echo get_post_meta( $post->ID, 'jetpack-post-views', true ); ?> read</li>-->
 
             	</ul><!-- .meta -->
 <!-- @minieetea 네비게이션 좌우 버튼 제거

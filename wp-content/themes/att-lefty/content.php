@@ -54,7 +54,7 @@ else { ?>
 			<?php the_tags(''); ?>
 			<?php endif; ?></li>
                         <?php // @haruair 구독수 추가 ?>
-                        <li><i class="icon-bookmark"></i><?php echo get_post_meta( $post->ID, 'jetpack-post-views', true ); ?> read</li>
+                        <!--<li><i class="icon-bookmark"></i><?php echo get_post_meta( $post->ID, 'jetpack-post-views', true ); ?> read</li>-->
             	</ul>
        
 
