@@ -6,7 +6,7 @@ cd ..
 echo "# git: adding changed files..."
 git add -u
 echo "# git: committing...""
-git commit -m \"snapshot `date`\"
+git commit -m "snapshot `date`"
 echo "# git: pushing""
 git push origin master
 echo "# done, unless there was an error!"

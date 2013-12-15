@@ -103,9 +103,14 @@ class WM_Feed_Registration {
     function init_meta_box() {
         remove_post_type_support('feed', 'title');
         remove_post_type_support('feed', 'author');
+
+	/*
+	 * FIXME: Please fix the following remove_meta_box() calls or remove tha cause php warning printed in the page and then make the page encoding ineffective
+	  - simon
         remove_meta_box('slugdiv','feed');
         remove_meta_box('sharing_meta','feed');
         remove_meta_box('wpseo_meta','feed');
+	*/
     }
 
     /**
