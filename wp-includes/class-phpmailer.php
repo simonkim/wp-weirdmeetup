@@ -81,20 +81,20 @@ class PHPMailer {
    * Sets the From email address for the message.
    * @var string
    */
-  public $From              = 'wordpress@we.weirdmeetup.com';
+  public $From              = 'root@localhost';
 
   /**
    * Sets the From name of the message.
    * @var string
    */
-  public $FromName          = 'Weird Meetup';
+  public $FromName          = 'Root User';
 
   /**
    * Sets the Sender email (Return-Path) of the message.  If not empty,
    * will be sent via -f to sendmail or as 'MAIL FROM' in smtp mode.
    * @var string
    */
-  public $Sender            = 'wordpress@we.weirdmeetup.com';
+  public $Sender            = '';
 
   /**
    * Sets the Return-Path of the message.  If empty, it will

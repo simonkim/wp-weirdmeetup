@@ -22,7 +22,7 @@
     <div id="wrap" class="container clr">
     
     	<div class="container-left span_5 col clr-margin clr">
-    
+        <div id="weirdmeetup"></div>
         <header id="masthead" class="site-header clr" role="banner">
             <div class="logo">
                 <?php if ( of_get_option('custom_logo') ) { ?>
@@ -36,7 +36,7 @@
         </header><!-- .header -->
         
         <?php get_sidebar(); ?>
-        <a href="#" class="mobile-closer"><span>Go to the top</span></a>
+        <a href="#weirdmeetup" class="mobile-closer"><span>Go to the top</span></a>
 	</div><!-- .left-container clr -->
         
     <div class="container-right span_19 col clr">

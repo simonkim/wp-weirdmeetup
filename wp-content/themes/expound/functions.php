@@ -123,7 +123,8 @@ add_action( 'widgets_init', 'expound_widgets_init' );
  * Enqueue scripts and styles
  */
 function expound_scripts() {
-	wp_enqueue_style( 'expound-style', get_stylesheet_uri(), array(), 3 );
+	// Don't forget to bump the version numbers in style.css and editor-style.css
+	wp_enqueue_style( 'expound-style', get_stylesheet_uri(), array(), 20131116 );
 
 	wp_enqueue_script( 'expound-navigation', get_template_directory_uri() . '/js/navigation.js', array(), '20120206', true );
 
@@ -224,7 +225,7 @@ function expound_get_related_posts() {
 
 	// Support for the Yet Another Related Posts Plugin
 	if ( function_exists( 'yarpp_get_related' ) ) {
-		$related = yarpp_get_related( array(), $post->ID );
+		$related = yarpp_get_related( array( 'limit' => 3 ), $post->ID );
 		return new WP_Query( array(
 			'post__in' => wp_list_pluck( $related, 'ID' ),
 			'posts_per_page' => 3,

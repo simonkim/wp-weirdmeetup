@@ -68,7 +68,8 @@ class WM_Feed_Registration {
         register_post_type( 'feed',
             array(
                 'labels' => $labels,
-                'public' => true,
+                'public' => false,
+                'publicly_queryable' => false,
                 'with_front' => false,
                 'has_archive' => false,
                 'capability_type' => 'post',
@@ -104,13 +105,9 @@ class WM_Feed_Registration {
         remove_post_type_support('feed', 'title');
         remove_post_type_support('feed', 'author');
 
-	/*
-	 * FIXME: Please fix the following remove_meta_box() calls or remove tha cause php warning printed in the page and then make the page encoding ineffective
-	  - simon
-        remove_meta_box('slugdiv','feed');
-        remove_meta_box('sharing_meta','feed');
-        remove_meta_box('wpseo_meta','feed');
-	*/
+        remove_meta_box('slugdiv','feed', 'normal');
+        remove_meta_box('sharing_meta','feed', 'normal');
+        remove_meta_box('wpseo_meta','feed', 'normal');
     }
 
     /**
